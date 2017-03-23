@@ -36,6 +36,6 @@ struct TCD_istruct {
 	long top10Contr[10];
 };
 
-long hashFunc(long id, long size){
+long hash(long id, long size){
 	return id % size; 
 }
