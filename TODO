@@ -1,0 +1,15 @@
+Implementar:
+*estrutura de dados
+*init
+*load
+*clean
+*all_articles
+*unique_articles
+*all_revisions
+*top_10_contributors
+*contributor_name
+*top_20_largest_articles
+*article_title
+*top_N_articles_with_more_words
+*title_with_prefix
+*article_timestamp
