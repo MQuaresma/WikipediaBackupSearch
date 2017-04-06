@@ -1,9 +1,9 @@
 Implementar:
-*init
+*init(done)
 *load
 *clean
-*all_articles
-*unique_articles
+*all_articles(done)
+*unique_articles(done)
 *all_revisions
 *top_10_contributors
 *contributor_name

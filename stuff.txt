@@ -1,0 +1,17 @@
+processar paginas(int processaPaginas(TAD_istruct, xmlNodePtr))
+
+    *adicionar artigo hash(int hashAdd(TAD_istruct, xmlNodePtr, xmlDocPtr))
+
+    *adicionar revisao(int addRev(struct revDict *, contribTree *, xmlNodePtr, xmlDocPtr, long *, long *))
+
+    *contar palavras/chars(void contarWL(xmlChar *, long *, long *))
+
+    *redimensionar hash table e copiar val(articTableP *resize(articTableP*))
+
+    *adicionar avl(void addAVL(contribTree *, xmlNodePtr, xmlDocPtr))
+
+    *equilibrar avl(contribTree *balance())
+
+    *ordenar top 10 contrib
+
+contar nro art(tot e un)
