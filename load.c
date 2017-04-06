@@ -47,6 +47,51 @@ void addAVL(contribTree **cT, long id, xmlChar *nome){
 
 }
 
+ /*
+     * Adiciona um artico à hashTable
+     * @param articCollect apontador para hashTable
+     * @param nodo apontador de nós do xml só de um artico
+     * @return 0 se não adicionei
+     * @return 1 se adicionei
+    */
+int hashAdd(TAD_istruct st, xmlNodePtr nodo, xmlDocPtr doc){
+            int success=0;
+  
+            nodo = nodo->xmlChildrenNode;
+            if(nodo){
+                  articInfo * newArtic;
+                  while(nodo){    
+                          if(xmlStrCmp(cur->name,(const xmlChar*))"title"){
+                                  xmlChar * title = xmlNodeListGetString(doc,nodo->xmlChildrenNode, 1);
+                                  if(title) strdup(newArtic->title,title);
+                          }
+  
+                          if(xmlStrCmp(cur->name,(const xmlChar*))"id"){
+                                  sscanf(nodo->xmlChildrenNode,long,&(newArtic->id))  ;
+                          }
+  
+                          if((xmlStrCmp(cur->name,(const xmlChar*))"revision")){
+                                  newArtic->nRev++;
+                                  addRev(newArtic->revs,st->contribuitors,nodo,doc,&(newArtic->len),&(newArtic->words));
+                          }
+                          nodo = nodo->next;
+                  }
+                  long ind = hash(newArtic->id,st->articCollect->size);
+		  articInfo * aux = st->articCollect[ind];
+  
+                  while(aux && aux->next){
+                          aux = aux->next;
+                  }       
+                  aux = newArtic;
+  
+                  st->articCollect->size++;
+                  st->articCollect->racio = size/HASHSIZE;
+                  success = 1;
+            }
+            return success;
+    }
+
+
 long all_articles(TAD_istruct qs){
 
     return qs->artTot;
