@@ -67,7 +67,7 @@ int hashAdd(TAD_istruct st, xmlNodePtr nodo, xmlDocPtr doc){
                           }
   
                           if(xmlStrCmp(cur->name,(const xmlChar*))"id"){
-                                  sscanf(nodo->xmlChildrenNode,long,&(newArtic->id))  ;
+                                  sscanf(nodo->xmlChildrenNode,long,&(newArtic->id));
                           }
   
                           if((xmlStrCmp(cur->name,(const xmlChar*))"revision")){
@@ -82,7 +82,8 @@ int hashAdd(TAD_istruct st, xmlNodePtr nodo, xmlDocPtr doc){
                   while(aux && aux->next){
                           aux = aux->next;
                   }       
-                  aux = newArtic;
+                  if(aux) aux->next = newArtic;
+                  else aux = newArtic;
   
                   st->articCollect->size++;
                   st->articCollect->racio = size/HASHSIZE;
@@ -91,6 +92,39 @@ int hashAdd(TAD_istruct st, xmlNodePtr nodo, xmlDocPtr doc){
             return success;
     }
 
+/*
+ * Redimensiona a hashTable de articleInfo *
+ * @param articCollect apontador para a hashTable
+ * @return hashTable redimensionada
+ */
+void resize(articTableP * articCollect){
+          long elem = 0, i=0, hashVal;
+          long newSize = 2*articCollect->size;
+          struct articleInfo **newP = (struct articleInfo **)calloc(newSize,sizeof(void *));
+          struct articleInfo *aux = NULL, *auxI=NULL;
+
+          while(i<articCollect->size){
+                  aux = articCollect->table[i];
+                  while(aux){
+                          hashVal = hash((*aux)->id,newSize);
+                          auxI = newP[hashVal];
+
+                          while(auxI && auxI->next)
+                                  auxI = auxI->next;
+
+                          if(auxI) auxI->next = aux;
+                          else auxI = aux;
+
+                          elem++;
+                          aux = aux->next;
+                  }
+                  i++;
+          }
+          free(articCollect->table);
+          articCollect->table = newP;
+          articCollect->size = newSize;
+          articCollect->racio = elem/newSize;
+}
 
 long all_articles(TAD_istruct qs){
 
