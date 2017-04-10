@@ -63,7 +63,7 @@ int hashAdd(TAD_istruct st, xmlNodePtr nodo, xmlDocPtr doc){
                   while(nodo){    
                           if(xmlStrCmp(cur->name,(const xmlChar*))"title"){
                                   xmlChar * title = xmlNodeListGetString(doc,nodo->xmlChildrenNode, 1);
-                                  if(title) strdup(newArtic->title,title);
+                                  if(title) newArtic->title=strdup(title);
                           }
   
                           if(xmlStrCmp(cur->name,(const xmlChar*))"id"){
