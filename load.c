@@ -46,47 +46,42 @@ void addAVL(contribTree **cT, long id, xmlChar *nome){
     }
 
 }
-
+ 
  /*
-     * Adiciona um artico à hashTable
-     * @param articCollect apontador para hashTable
-     * @param nodo apontador de nós do xml só de um artico
-     * @return 0 se não adicionei
-     * @return 1 se adicionei
-    */
-int hashAdd(TAD_istruct st, xmlNodePtr nodo, xmlDocPtr doc){
-            int success=0;
+  * Adiciona um artico à hashTable
+  * @param articCollect apontador para hashTable
+  * @param nodo apontador de nós do xml só de um artico
+  * @return 0 se não adicionei, 1 se adicionei
+  */
+  int hashAdd(TAD_istruct st, xmlNodePtr nodo, xmlDocPtr doc){
+ 	    int success=0;
+            struct articleInfo *newArtic = NULL, *aux = NULL;
   
             nodo = nodo->xmlChildrenNode;
             if(nodo){
-                  articInfo * newArtic;
                   while(nodo){    
-                          if(xmlStrCmp(cur->name,(const xmlChar*))"title"){
-                                  xmlChar * title = xmlNodeListGetString(doc,nodo->xmlChildrenNode, 1);
-                                  if(title) newArtic->title=strdup(title);
-                          }
+                          if(!xmlStrcmp(nodo->name,(const xmlChar*)"title")){ 
+                                  xmlChar * title = xmlNodeListGetString(doc, nodo->xmlChildrenNode, 1);
+                                  if(title) newArtic->title = strdup(title);
+                                  xmlFree(title);
   
-                          if(xmlStrCmp(cur->name,(const xmlChar*))"id"){
-                                  sscanf(nodo->xmlChildrenNode,long,&(newArtic->id));
-                          }
+                          }else if(!xmlStrcmp(nodo->name,(const xmlChar*)"id")){
+                                          xmlChar * name = xmlNodeListGetString(doc, nodo->xmlChildrenNode, 1);
+                                          sscanf(name,"%ld",&(newArtic->id));
+                                          xmlFree(name);
   
-                          if((xmlStrCmp(cur->name,(const xmlChar*))"revision")){
-                                  newArtic->nRev++;
-                                  addRev(newArtic->revs,st->contribuitors,nodo,doc,&(newArtic->len),&(newArtic->words));
-                          }
-                          nodo = nodo->next;
+                                }else if(!xmlStrcmp(nodo->name,(const xmlChar*)"revision")){
+>>                                                addRev(newArtic->revs,st->contribuitors,nodo,doc,&(newArtic->len),&(newArtic->words));
+                                                  newArtic->nRev++;
+                                      }
+                          nodo=nodo->next;
                   }
                   long ind = hash(newArtic->id,st->articCollect->size);
-		  articInfo * aux = st->articCollect[ind];
   
-                  while(aux && aux->next){
-                          aux = aux->next;
-                  }       
+                  for(aux=(st->articCollect)->table[ind]; aux && aux->next; aux=aux->next);
+  
                   if(aux) aux->next = newArtic;
                   else aux = newArtic;
-  
-                  st->articCollect->size++;
-                  st->articCollect->racio = size/HASHSIZE;
                   success = 1;
             }
             return success;
@@ -95,36 +90,31 @@ int hashAdd(TAD_istruct st, xmlNodePtr nodo, xmlDocPtr doc){
 /*
  * Redimensiona a hashTable de articleInfo *
  * @param articCollect apontador para a hashTable
- * @return hashTable redimensionada
  */
-void resize(articTableP * articCollect){
+ void resize(articTableP * articCollect){
           long elem = 0, i=0, hashVal;
-          long newSize = 2*articCollect->size;
+          long newSize = 2*(*articCollect)->size;
           struct articleInfo **newP = (struct articleInfo **)calloc(newSize,sizeof(void *));
           struct articleInfo *aux = NULL, *auxI=NULL;
-
-          while(i<articCollect->size){
-                  aux = articCollect->table[i];
-                  while(aux){
-                          hashVal = hash((*aux)->id,newSize);
-                          auxI = newP[hashVal];
-
-                          while(auxI && auxI->next)
-                                  auxI = auxI->next;
-
+  
+          for(i=0; i<(*articCollect)->size; i++){
+                  for(aux=(*articCollect)->table[i]; aux; aux=aux->next){
+  
+                          hashVal = hash(aux->id,newSize);
+                          for(auxI=newP[hashVal]; auxI && auxI->next; auxI=auxI->next);
+  
                           if(auxI) auxI->next = aux;
                           else auxI = aux;
-
+  
                           elem++;
-                          aux = aux->next;
                   }
-                  i++;
           }
-          free(articCollect->table);
-          articCollect->table = newP;
-          articCollect->size = newSize;
-          articCollect->racio = elem/newSize;
-}
+          free((*articCollect)->table);
+          (*articCollect)->table = newP;
+          (*articCollect)->size = newSize;
+          (*articCollect)->racio = elem/newSize;
+  }
+
 
 long all_articles(TAD_istruct qs){
 
