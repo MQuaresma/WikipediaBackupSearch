@@ -51,15 +51,14 @@ TAD_istruct processPages(TAD_istruct qs, xmlNodePtr t, xmlDocPtr doc){
                                   xmlChar * title = xmlNodeListGetString(doc, nodo->xmlChildrenNode, 1);
                                   if(title) newArtic->title = strdup(title);
                                   xmlFree(title);
-  
                           }else if(!xmlStrcmp(nodo->name,(const xmlChar*)"id")){
                                           xmlChar * name = xmlNodeListGetString(doc, nodo->xmlChildrenNode, 1);
                                           sscanf(name,"%ld",&(newArtic->id));
                                           xmlFree(name);
   
-                                }else if(!xmlStrcmp(nodo->name,(const xmlChar*)"revision")){
->>                                                newArtic->nRev += addRev(&(newArtic->revs),&(st->contribuitors),nodo,doc,&(newArtic->len),&(newArtic->words), nRev);
-                                  }
+                          }else if(!xmlStrcmp(nodo->name,(const xmlChar*)"revision")){
+                                  newArtic->nRev += addRev(&(newArtic->revs),&(st->contribuitors),nodo,doc,&(newArtic->len),&(newArtic->words), nRev);
+                          }
                           nodo=nodo->next;
                   }
                   long ind = hash(newArtic->id,st->articCollect->size);
