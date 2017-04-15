@@ -11,7 +11,7 @@ int addRev(revDictP *dict, contribTreeP *tree, xmlNodePtr cur, xmlDocPtr doc, lo
     
     xmlChar *temp, *userN;
     xmlNodePtr aux;
-    int new = 1;
+    int new = 1, grown=1;
     long i, idT; 
 
     cur = cur->xmlChildrenNode;
@@ -42,7 +42,7 @@ int addRev(revDictP *dict, contribTreeP *tree, xmlNodePtr cur, xmlDocPtr doc, lo
                         sscanf(temp, "%ld", &idT);
                         xmlFree(temp);                     
                     }
-                    addAVL(tree, idT, userN, &new); 
+                    addAVL(tree, idT, userN, &grown); 
                     xmlFree(userN);
                 }    
                 else if(!xmlStrcmp(aux->name, (xmlChar *)"text")){
@@ -58,8 +58,6 @@ int addRev(revDictP *dict, contribTreeP *tree, xmlNodePtr cur, xmlDocPtr doc, lo
     }
 
     return new;
-
-}
 
 void addAVL(contribTreeP *tree, long id, xmlChar *nome, int *new){
 

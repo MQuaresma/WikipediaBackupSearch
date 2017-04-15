@@ -33,20 +33,7 @@ TAD_istruct processPages(TAD_istruct qs, xmlNodePtr t, xmlDocPtr doc){
 	return qs;
 }
 
-void addAVL(contribTree **cT, long id, xmlChar *nome){
 
-    
-
-    while(*cT && id != *cT->id)
-        cT = ((*cT->id > id) ? &(*cT->left) : &(*cT->left)); 
-    if(!(*cT)){
-
-
-
-    }
-
-}
- 
  /*
   * Adiciona um artico à hashTable
   * @param articCollect apontador para hashTable
@@ -71,9 +58,8 @@ void addAVL(contribTree **cT, long id, xmlChar *nome){
                                           xmlFree(name);
   
                                 }else if(!xmlStrcmp(nodo->name,(const xmlChar*)"revision")){
->>                                                addRev(newArtic->revs,st->contribuitors,nodo,doc,&(newArtic->len),&(newArtic->words));
-                                                  newArtic->nRev++;
-                                      }
+>>                                                newArtic->nRev += addRev(&(newArtic->revs),&(st->contribuitors),nodo,doc,&(newArtic->len),&(newArtic->words), nRev);
+                                  }
                           nodo=nodo->next;
                   }
                   long ind = hash(newArtic->id,st->articCollect->size);
