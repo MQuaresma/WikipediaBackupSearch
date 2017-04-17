@@ -34,7 +34,7 @@ TAD_istruct processPages(TAD_istruct qs, xmlNodePtr cur, xmlDocPtr doc){
                                   title = xmlNodeListGetString(doc, nodo->xmlChildrenNode, 1);
                           }else if(!xmlStrcmp(nodo->name,(const xmlChar*)"id")){
 				  xmlChar * name = xmlNodeListGetString(doc, nodo->xmlChildrenNode, 1);
-				  sscanf(name,"%ld",&(id));
+				  if(name) sscanf(name,"%ld",&(id));
 				  xmlFree(name);
 			  }else if(!xmlStrcmp(nodo->name,(const xmlChar*)"revision")){
 				  nodoRev = nodo;
@@ -108,7 +108,7 @@ int addRev(revDictP *dict, contribTreeP *tree, xmlNodePtr cur, xmlDocPtr doc, lo
     cur = cur->xmlChildrenNode;
     while(cur && new){
         if(!xmlStrcmp(cur->name, (xmlChar *)"id")){                     //id found
-            temp = xmlNodeListGetString(doc, cur->xmlChildrenNode);
+            temp = xmlNodeListGetString(doc, cur->xmlChildrenNode,1);
             if(temp){                                                   //non empty node
                 sscanf(temp, "%ld", &idT);
                 if((new = newEntry(*dict, nRev, idT))){
@@ -118,17 +118,17 @@ int addRev(revDictP *dict, contribTreeP *tree, xmlNodePtr cur, xmlDocPtr doc, lo
                 xmlFree(temp);
             }    
         }else if(!xmlStrcmp(cur->name, (xmlChar *)"timestamp")){        //add revision timestamp
-            temp = xmlNodeListGetString(doc, cur->xmlChildrenNode);
+            temp = xmlNodeListGetString(doc, cur->xmlChildrenNode,1);
             if(temp){                                                   //non empty node
-                (*dict)[nRev].timestamp = (xmlChar *)strdup(temp);    
+                (*dict)[nRev].timeStamp = (xmlChar *)strdup(temp);    
                 xmlFree(temp);
             }
         }else if(!xmlStrcmp(cur->name, (xmlChar*)"contributor")){
-            aux = cur->xmlChildreNode;
+            aux = cur->xmlChildrenNode;
             while(aux){
-                if(!xmlStrcmp(aux->name, (xmlChar *)"username")) userN = xmlNodeListGetString(doc, aux->xmlChildreNode);    //found user
+                if(!xmlStrcmp(aux->name, (xmlChar *)"username")) userN = xmlNodeListGetString(doc, aux->xmlChildrenNode,1);    //found user
                 else if(!xmlStrcmp(aux->name, (xmlChar *)"id")){                                                            //found user id
-                    temp = xmlNodeListGetString(doc, aux->xmlChildrenNode);
+                    temp = xmlNodeListGetString(doc, aux->xmlChildrenNode,1);
                     if(temp){
                         sscanf(temp, "%ld", &idT);
                         xmlFree(temp);                     
@@ -137,7 +137,7 @@ int addRev(revDictP *dict, contribTreeP *tree, xmlNodePtr cur, xmlDocPtr doc, lo
                     xmlFree(userN);
                 }    
                 else if(!xmlStrcmp(aux->name, (xmlChar *)"text")){
-                    temp = xmlNodeListGetString(doc, aux->xmlChildrenNode);
+                    temp = xmlNodeListGetString(doc, aux->xmlChildrenNode,1);
                     contarWL((char*)temp, len, words); 
                     xmlFree(temp);
                 }
