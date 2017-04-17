@@ -1,12 +1,12 @@
 #include "structManager.h"
 #include <string.h>
 
-TAD_istruct processPages(TAD_istruct qs, xmlNodePtr t, xmlDocPtr doc){
+TAD_istruct processPages(TAD_istruct qs, xmlNodePtr cur, xmlDocPtr doc){
 
 	while(cur){												//percorre o doc xml na totalidade
 		if(!xmlStrcmp(cur->name, (const xmlChar*)"page")){	//encontrou uma pagina
 			qs->artTot ++;
-			if(hashAdd(qs->articCollect, cur, doc)) qs->artUn ++; 
+			if(hashAdd(qs->articCollect, cur, doc)) qs->artUn++; 
         }
         cur = cur->next;
 	}
@@ -21,33 +21,46 @@ TAD_istruct processPages(TAD_istruct qs, xmlNodePtr t, xmlDocPtr doc){
   * @return 0 se não adicionei, 1 se adicionei
   */
   int hashAdd(TAD_istruct st, xmlNodePtr nodo, xmlDocPtr doc){
- 	    int success=0;
-            struct articleInfo *newArtic = NULL, *aux = NULL;
+ 	    int success=0, found=0;
+	    long ind, id;
+	    xmlChar * title = NULL;
+	    xmlNodePtr nodoRev = NULL;
+            struct articleInfo *newArtic = NULL, *aux = NULL, *prev = NULL;
   
             nodo = nodo->xmlChildrenNode;
             if(nodo){
                   while(nodo){    
                           if(!xmlStrcmp(nodo->name,(const xmlChar*)"title")){ 
-                                  xmlChar * title = xmlNodeListGetString(doc, nodo->xmlChildrenNode, 1);
-                                  if(title) newArtic->title = strdup(title);
-                                  xmlFree(title);
+                                  title = xmlNodeListGetString(doc, nodo->xmlChildrenNode, 1);
                           }else if(!xmlStrcmp(nodo->name,(const xmlChar*)"id")){
-                                          xmlChar * name = xmlNodeListGetString(doc, nodo->xmlChildrenNode, 1);
-                                          sscanf(name,"%ld",&(newArtic->id));
-                                          xmlFree(name);
-  
-                          }else if(!xmlStrcmp(nodo->name,(const xmlChar*)"revision")){
-                                  newArtic->nRev += addRev(&(newArtic->revs),&(st->contribuitors),nodo,doc,&(newArtic->len),&(newArtic->words), nRev);
+				  xmlChar * name = xmlNodeListGetString(doc, nodo->xmlChildrenNode, 1);
+				  sscanf(name,"%ld",&(id));
+				  xmlFree(name);
+			  }else if(!xmlStrcmp(nodo->name,(const xmlChar*)"revision")){
+				  nodoRev = nodo;
                           }
                           nodo=nodo->next;
-                  }
-                  long ind = hash(newArtic->id,st->articCollect->size);
-  
-                  for(aux=(st->articCollect)->table[ind]; aux && aux->next; aux=aux->next);
-  
-                  if(aux) aux->next = newArtic;
-                  else aux = newArtic;
-                  success = 1;
+		  }
+
+                  ind = hash(id,st->articCollect->size);
+  		  for(aux=(st->articCollect)->table[ind]; aux && !found; aux=aux->next){
+			  if(id==aux->id) found=1;
+			  prev = aux;
+		  } 
+			
+		  if(found){
+			  if(title) aux->title = strdup(title);
+			  aux->nRev += addRev(&(aux->revs),&(st->contribuitors),nodoRev,doc,&(aux->len),&(aux->words), aux->nRev);
+		  }else{
+			  newArtic = (struct articleInfo*)malloc(sizeof(struct articleInfo));
+                          if(title) newArtic->title = strdup(title);
+			  newArtic->id=id;
+			  newArtic->nRev=0;
+			  newArtic->nRev += addRev(&(newArtic->revs),&(st->contribuitors),nodoRev,doc,&(newArtic->len),&(newArtic->words), newArtic->nRev);
+			  prev->next=newArtic;
+		  	  success = 1; 
+		  }
+		  xmlFree(title);
             }
             return success;
     }
