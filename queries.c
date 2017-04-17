@@ -1,3 +1,55 @@
+#include "structManager.h"
+
+long* devolveArrayOrd(int, int, TAD_istruct);
+
+long all_articles(TAD_istruct qs){
+
+    return qs->artTot;
+
+}
+
+long unique_articles(TAD_istruct qs){
+
+    return qs->artUn;
+
+}
+
+long *top_10_contributors(TAD_istruct qs){
+
+    return qs->top10Contr;
+
+}
+
+long* top_20_largest_articles(TAD_istruct qs){
+	return devolveArrayOrd(20,0,qs);
+}
+
+long* top_N_articles_with_more_words(int n, TAD_istruct qs){
+	return devolveArrayOrd(n,1,qs);
+}
+
+char* article_timestamp(long article_id, long revision_id, TAD_istruct qs){
+	long hashV = hash(article_id,(qs->articCollect)->size);
+	struct articleInfo *aux = NULL; 
+	struct revDict *auxRev = NULL;
+	char *ret = NULL;
+	int f = 0,i;
+	
+	for(aux=(qs->articCollect)->table[hashV]; aux && !f; aux=aux->next){
+		if(aux->id==article_id){
+			auxRev = aux->revs;
+			for(i=0; i<(aux->nRev) && !f; i++){
+				if((auxRev[i].id)==revision_id){
+					ret=auxRev[i].timeStamp;
+					f = 1;
+				}
+			}
+		}
+	}
+	return ret;
+}
+
+
 /*
  *Funçao que devolve um array de ids de artigo: 
  *    caso b=0: ordenado do maior para o menor artigo em termos de tamanho
@@ -42,33 +94,4 @@ long* devolveArrayOrd(int n, int b, TAD_istruct qs){
         }
         free(val);
         return top;
-}
-
-long* top_20_largest_articles(TAD_istruct qs){
-	return devolveArrayOrd(20,0,qs);
-}
-
-long* top_N_articles_with_more_words(int n, TAD_istruct qs){
-	return devolveArrayOrd(n,1,qs);
-}
-
-char* article_timestamp(long article_id, long revision_id, TAD_istruct qs){
-	long hashV = hash(article_id,(qs->articCollect)->size);
-	struct articleInfo *aux = NULL; 
-	struct revDict *auxRev = NULL;
-	char *ret = NULL;
-	int f = 0,i;
-	
-	for(aux=(qs->articCollect)->table[hashV]; aux && !f; aux=aux->next){
-		if(aux->id==article_id){
-			auxRev = aux->revs;
-			for(i=0; i<(aux->nRev) && !f; i++){
-				if((auxRev[i].id)==revision_id){
-					ret=auxRev[i].timeStamp;
-					f = 1;
-				}
-			}
-		}
-	}
-	return ret;
 }

@@ -1,14 +1,25 @@
 CC = gcc
-CFLAGS = -Wall -g `pkg-config --cflags libxml-2.0` `pkg-config --cflags glib-2.0
-LIBS = `pkg-config --libs libxml-2.0` `pkg-config --libs glib-2.0`
+CFLAGS = -Wall -std=c11 -g -I/usr/include/libxml2
+LIBS = -lxml2 -lz -lpthread -licucore -lm
 DEPS = interface.h
-OBJ = program.o
+OBJ = load.o queries.o program.o structManager.o
 
 program: $(OBJ)
 	$(CC) $(CFLAGS) -o program $(OBJ) $(LIBS)
 
 program.o: $(DEPS)
 	$(CC) -c $(CFLAGS) program.c
+
+structManager.o: structManager.h
+	$(CC) -c $(CFLAGS) structManager.c
+
+
+load.o: structManager.h
+	$(CC) -c $(CFLAGS) load.c
+
+
+queries.o: structManager.h
+	$(CC) -c $(CFLAGS) queries.c
 
 clean: 
 	rm *.o program 

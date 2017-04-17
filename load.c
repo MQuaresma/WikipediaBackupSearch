@@ -1,25 +1,5 @@
-TAD_istruct load(TAD_istruct qs, int nsnaps, char *snaps_paths[]){
-
-    xmlDocPtr doc;
-    xmlNodePtr cur;
-
-    while(--nsnaps){
-        doc = xmlParseFile(*snaps_paths);
-
-        if(!doc) fprintf(stderr, "Couldn't parse file\n");
-
-        else{
-            cur = xmlDocGetRootElement(doc);
-            if(!cur) fprintf(stderr, "Empty xml document\n");
-            else{
-                cur = cur->xmlChildrenNode;
-                qs = processPages(qs, cur, doc);                  
-            }
-            xmlFreeDoc(doc);
-        } 
-        ++snaps_paths;
-    }
-}
+#include "structManager.h"
+#include <string.h>
 
 TAD_istruct processPages(TAD_istruct qs, xmlNodePtr t, xmlDocPtr doc){
 
@@ -98,23 +78,209 @@ TAD_istruct processPages(TAD_istruct qs, xmlNodePtr t, xmlDocPtr doc){
           (*articCollect)->table = newP;
           (*articCollect)->size = newSize;
           (*articCollect)->racio = elem/newSize;
-  }
+}
 
 
-long all_articles(TAD_istruct qs){
+/*
+ * Regista um novo contribuidor e revisao
+ *
+*/
+int addRev(revDictP *dict, contribTreeP *tree, xmlNodePtr cur, xmlDocPtr doc, long *len, long *words, long nRev){
+    
+    xmlChar *temp, *userN;
+    xmlNodePtr aux;
+    int new = 1, grown=1;
+    long i, idT; 
 
-    return qs->artTot;
+    cur = cur->xmlChildrenNode;
+    while(cur && new){
+        if(!xmlStrcmp(cur->name, (xmlChar *)"id")){                     //id found
+            temp = xmlNodeListGetString(doc, cur->xmlChildrenNode);
+            if(temp){                                                   //non empty node
+                sscanf(temp, "%ld", &idT);
+                if((new = newEntry(*dict, nRev, idT))){
+                    *dict = (struct revDict *)realloc(*dict, nRev+1);    
+                    (*dict)[nRev].id = idT;
+                }
+                xmlFree(temp);
+            }    
+        }else if(!xmlStrcmp(cur->name, (xmlChar *)"timestamp")){        //add revision timestamp
+            temp = xmlNodeListGetString(doc, cur->xmlChildrenNode);
+            if(temp){                                                   //non empty node
+                (*dict)[nRev].timestamp = (xmlChar *)strdup(temp);    
+                xmlFree(temp);
+            }
+        }else if(!xmlStrcmp(cur->name, (xmlChar*)"contributor")){
+            aux = cur->xmlChildreNode;
+            while(aux){
+                if(!xmlStrcmp(aux->name, (xmlChar *)"username")) userN = xmlNodeListGetString(doc, aux->xmlChildreNode);    //found user
+                else if(!xmlStrcmp(aux->name, (xmlChar *)"id")){                                                            //found user id
+                    temp = xmlNodeListGetString(doc, aux->xmlChildrenNode);
+                    if(temp){
+                        sscanf(temp, "%ld", &idT);
+                        xmlFree(temp);                     
+                    }
+                    addAVL(tree, idT, userN, &grown); 
+                    xmlFree(userN);
+                }    
+                else if(!xmlStrcmp(aux->name, (xmlChar *)"text")){
+                    temp = xmlNodeListGetString(doc, aux->xmlChildrenNode);
+                    contarWL((char*)temp, len, words); 
+                    xmlFree(temp);
+                }
+                aux = aux->next;
+            }
+            xmlFree(aux);
+        }
+        cur = cur->next;
+    }
+
+    return new;
+}
+
+void addAVL(contribTreeP *tree, long id, xmlChar *nome, int *new){
+
+    if(*tree){
+        if(*tree->id == id){ 
+            (*tree)->nRev ++; 
+            *new = 0;
+        }
+        else if(*tree->id > id) addAVLLeft(tree, id , nome, new);
+        else addAVLRight(tree, id, nome, new);
+    }else{
+        *tree =(contribTreeP)malloc(sizeof(struct contribTreeP));
+        *tree->id = id;
+        *tree->nome = xmlStrdup(nome);
+        *tree->nRev = 1;
+        *tree->bal = EH;
+        *tree->left = *tree->right = NULL;
+        *new = 1;
+    }
+}
+
+
+void addAVLRight(contribTreeP *tree, long id, xmlChar *nome, int *new){
+
+    addAVL(&(*tree->right), id, nome, new);
+
+    if(*new){
+        switch(*tree->bal){
+            case EH:
+                *new = 1;
+                *tree->bal = RH;
+                break;
+            case LH:
+                *new = 0;
+                *tree->bal = EH;
+                break;
+            case RH:
+                balanceRight(tree);
+                break;
+        }
+    }
 
 }
 
-long unique_articles(TAD_istruct qs){
+void addAVLLeft(contribTreeP *tree, long id, xmlChar *nome, int *new){
 
-    return qs->artUn;
+    addAVL(&(*tree->left), id, nome, new);
+
+    if(*new){
+        switch(*tree->bal){
+            case EH:
+                *new = 1;
+                *tree->bal = RH;
+                break;
+            case RH:
+                *new = 0;
+                *tree->bal = EH;
+                break;
+            case LH:
+                balanceLeft(tree);
+                break;
+        }
+    }
 
 }
 
-long *top_10_contributors(TAD_istruct qs){
+void balanceRight(contribTreeP *tree){
 
-    return qs->top10Contr;
+    contribTreeP aux;  
+    
+    if(*tree->right->bl == RH){
+        aux = *tree;
+        *tree = *tree->right;
+        aux->right = *tree->left;
+        *tree->left = aux;
+        *tree->bl = EH;
+        *tree->left->bl = EH;
+    }else{
+        aux = *tree->right;
+        *tree->right = aux->left;
+        aux->left = *tree->right->right;
+        *tree->right->right = aux;
+        aux =  = *tree;
+        *tree = *tree->right;
+        aux->right = *tree->left;
+        *tree->left = aux;
+        switch(*tree->bl){
+            case LH: 
+                *tree->left->bl = EH;                   
+                *tree->right->bl = RH;                  
+                break;
+            case RH:
+                *tree->left->bl = LH;                   
+                *tree->right->bl = EH;                   
+                break;
+            case EH:
+                *tree->left->bl = EH;                 
+                *tree->right->bl = EH;                 
+                break;
+        }
+        *tree->bl = EH;
+    }
 
+}
+
+void balanceLeft(contribTreeP *tree){
+
+    contribTreeP aux;  
+    
+    if(*tree->left->bl == LH){
+        aux = *tree;
+        *tree = *tree->left;
+        aux->left = *tree->right;
+        *tree->right = aux;
+        *tree->bl = EH;
+        *tree->left->bl = EH;
+    }else{
+        aux = *tree->left;
+        *tree->left = aux->right;
+        aux->right = *tree->left->left;
+        *tree->left->left = aux;
+        aux = *tree;
+        *tree = aux->left;
+        aux->left = *tree->right;
+        *tree->right = aux;
+        switch(*tree->bl){
+            case LH: 
+                *tree->left->bl = EH;                   
+                *tree->right->bl = RH;                  
+                break;
+            case RH:
+                *tree->left->bl = LH;                   
+                *tree->right->bl = EH;                   
+                break;
+            case EH:
+                *tree->left->bl = EH;                 
+                *tree->right->bl = EH;                 
+                break;
+        }
+        *tree->bl = EH;
+    }
+
+}
+
+long hash(long id, long size){
+	return id % size; 
 }
