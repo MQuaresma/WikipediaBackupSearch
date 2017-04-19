@@ -5,9 +5,6 @@
 #include <libxml/tree.h>
 #include "interface.h"
 #define HASHSIZE 100013
-#define EH 0        //AVL equilibrada
-#define LH 1        //AVL desequilibrada para a esquerda
-#define RH 2        //AVL desequilibrada para a direita
 
 /*
  * Dicionario que guarda uma revisao de determinado artigo
@@ -29,7 +26,7 @@ typedef struct revDict{
   @param words Nro de palavras do artigo
   @param next Apontador para o artigo seguinte
  */
-struct articleInfo {
+typedef struct articleInfo {
 	long id;
 	xmlChar *title;
 	struct revDict *revs;
@@ -37,7 +34,7 @@ struct articleInfo {
 	long len;
 	long words;
     struct articleInfo *next;
-};
+}*articleInfoP;
 
 /*
  * Hash table fechada com artigos
@@ -46,25 +43,23 @@ struct articleInfo {
  @param table Lista de apontadores para a estrutura do ficheiro
  */
 typedef struct articTable{
-	int racio;
+	long nArt;
 	long size;
-	struct articleInfo **table;
+	articleInfoP *table;
 }*articTableP;
 
 /*
- * AVL para guardar os contribuidores ordenados por id
+ * Arvore binaria para guardar os contribuidores ordenados por id
  @param id ID do contribuidor
  @param nome Nome do contribuidor
  @param nRev Nro de revisoes efetuadas pelo contribuidor
  @param left Apontador para o contribuidor da esquerda(menor id)
- @param bal Fator de balanço
  @param right Apontador para o contribuidor da direita(maior id)
  */
 typedef struct contribTree{
 	long id;
 	xmlChar *nome;
 	int nRev;
-    int bal;
 	struct contribTree *left;
 	struct contribTree *right;
 }*contribTreeP;
@@ -81,16 +76,11 @@ struct TCD_istruct {
 	long artUn, artTot;
 	articTableP articCollect;
 	struct contribTree *contribuitors;
-	long top10Contr[10];
 };
 
 TAD_istruct processPages(TAD_istruct qs, xmlNodePtr t, xmlDocPtr doc);
 int hashAdd(TAD_istruct st, xmlNodePtr nodo, xmlDocPtr doc);
-void resize(articTableP * articCollect);
+void resize(articTableP articCollect);
 int addRev(revDictP *dict, contribTreeP *tree, xmlNodePtr cur, xmlDocPtr doc, long *len, long *words, long nRev);
-void addAVL(contribTreeP *tree, long id, xmlChar *nome, int *new);
-void addAVLRight(contribTreeP *tree, long id, xmlChar *nome, int *new);
-void addAVLLeft(contribTreeP *tree, long id, xmlChar *nome, int *new);
-void balanceRight(contribTreeP *tree);
-void balanceLeft(contribTreeP *tree);
+void addBTree(contribTreeP *tree, long id, xmlChar *nome);
 long hash(long id, long size);

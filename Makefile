@@ -1,11 +1,16 @@
 CC = gcc
-CFLAGS = -Wall -std=c11 -g -I/usr/include/libxml2
-LIBS = -lxml2 -lz -lpthread -licucore -lm
+CFLAGS = -Wall -std=c11 -g `xml2-config --cflags`
+LIBS = `xml2-config --libs`
 DEPS = interface.h
 OBJ = load.o queries.o program.o structManager.o
 
 program: $(OBJ)
 	$(CC) $(CFLAGS) -o program $(OBJ) $(LIBS)
+
+test: $(OBJ)
+	$(CC) $(CFLAGS) -o program $(OBJ) $(LIBS)
+	rm *.o
+	mv program ../Datasets
 
 program.o: $(DEPS)
 	$(CC) -c $(CFLAGS) program.c
