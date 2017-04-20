@@ -75,7 +75,7 @@ typedef struct contribTree{
 struct TCD_istruct {
 	long artUn, artTot;
 	articTableP articCollect;
-	struct contribTree *contribuitors;
+	contribTreeP contribuitors;
 };
 
 TAD_istruct processPages(TAD_istruct qs, xmlNodePtr t, xmlDocPtr doc);

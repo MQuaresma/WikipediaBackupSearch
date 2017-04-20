@@ -11,6 +11,22 @@ int newEntry(revDictP dict, long nRev, long idT){
 
 }
 
+// Conta o número de palavras total e o número de caracteres total de uma String.
+void contarWL(char s[], long *car, long *pal){
+
+    int i=0, p=0;
+
+    while(s[i]){
+        while(s[i] && (s[i] == ' ' || s[i] == '\t'  || s[i] == '\n')) i ++;
+        if(s[i]) p++; 
+        while(s[i] && s[i] != ' ' && s[i] != '\t'  && s[i] != '\n') i ++;
+    }
+
+    *pal = p;
+    *car = i;
+
+}
+
 
 TAD_istruct processPages(TAD_istruct qs, xmlNodePtr cur, xmlDocPtr doc){
 
@@ -160,7 +176,7 @@ int addRev(revDictP *dict, contribTreeP *tree, xmlNodePtr cur, xmlDocPtr doc, lo
         }else if(!xmlStrcmp(cur->name, (xmlChar *)"text")){
             temp = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
             if(temp){
-                //contarWL((char*)temp, &lenAux, &wordsAux); 
+                contarWL((char*)temp, &lenAux, &wordsAux); 
                 xmlFree(temp);
                 if(lenAux > *len) *len = lenAux;
                 if(wordsAux > *words) *words = wordsAux;
@@ -174,13 +190,12 @@ int addRev(revDictP *dict, contribTreeP *tree, xmlNodePtr cur, xmlDocPtr doc, lo
 
 void addBTree(contribTreeP *tree, long id, xmlChar *nome){
 
-    if(*tree){
-        if((*tree)->id == id){ 
-            (*tree)->nRev ++; 
-        }
-        else if((*tree)->id > id) addBTree(&((*tree)->left), id , nome);
-        else addBTree(&((*tree)->right), id , nome);
-    }else{
+    while(*tree && (*tree)->id != id){
+        if((*tree)->id > id) tree = &((*tree)->left);
+        else tree = &((*tree)->right);
+    }
+    if((*tree) && (*tree)->id == id) (*tree)->nRev ++; 
+    else{
         *tree =(contribTreeP)malloc(sizeof(struct contribTree));
         (*tree)->id = id;
         (*tree)->nome = xmlStrdup(nome);

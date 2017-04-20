@@ -1,8 +1,10 @@
 #include "structManager.h"
+#include <string.h>
 
 long* devolveArrayOrd(int, int, TAD_istruct);
 long* runTree(contribTreeP tree);
 contribTreeP *myRealloc(contribTreeP *oStack, int size, int nSize);
+void quickSort(char **arr, int len);
 
 long all_articles(TAD_istruct qs){
 
@@ -147,4 +149,111 @@ long* devolveArrayOrd(int n, int b, TAD_istruct qs){
         }
         if(val)free(val);
         return top;
+}
+
+
+
+// soma de todas as revisões
+long all_revisions(TAD_istruct qs){
+    articleInfoP i;
+    long k,soma=0;
+    
+    for (k=0; k<qs->articCollect->size;k++){
+       i = qs->articCollect->table[k];
+       while (i!=NULL){
+         soma = soma + i->nRev;
+         i=i->next;
+       }
+    }
+    return soma;
+}
+
+
+
+//Devolve 
+char* contributor_name(long contributor_id, TAD_istruct qs){
+
+  contribTreeP nodo;
+
+  nodo = qs->contribuitors;
+  while(nodo && nodo->id != contributor_id){
+      if(nodo->id > contributor_id) nodo = nodo->left;
+      else nodo = nodo->right;
+  }
+
+  if(nodo) return (char*)nodo->nome;
+  else return NULL;
+
+} 
+
+
+
+
+//Devolve o nome de um artigo, através do id dado.
+
+char* article_title(long article_id, TAD_istruct qs){
+  articleInfoP i;
+  long k, flag=0;
+  
+  for (k=0; k<qs->articCollect->size && !flag; k++){
+   i=qs->articCollect->table[k];
+   while (i != NULL && i->id != article_id){
+     i=i->next;
+   }
+   if (i!=NULL) flag=1;
+  }
+  if (i!= NULL)
+  return (char*)i->title;
+  else return NULL;
+}
+
+
+// Devolve uma lista de endereços cujo o título tem o prefixo dado.
+char** title_with_prefix(char* prefix, TAD_istruct qs){
+
+    int n=10, len = strlen(prefix);
+    long k, j=0;
+    articleInfoP i;
+    char** guarda = (char**)calloc(n,sizeof (char*));
+
+    for (k=0; k<qs->articCollect->size;k++)
+        for(i = qs->articCollect->table[k]; i ; i=i->next)
+            if (xmlStrstr(i->title,(xmlChar*)prefix) == i->title){
+                if (j>=n) {
+                    n *= 2;
+                    guarda = (char**)realloc(guarda,n);
+                }
+                guarda[j++] = (char*)i->title;
+            }
+
+    if (j>=n) guarda = (char**)realloc(guarda,n+1);
+    guarda[j] = NULL;
+
+    quickSort(guarda, len);  
+
+    return guarda;
+}
+
+void quickSort(char **arr, int len){
+
+    char *piv, *aux;
+    int i, j;
+
+    if(*arr && arr[1]){
+        piv = *arr;
+        j = 1;
+        for(i = 1; arr[i]; i ++){
+            if(strcmp(piv+len, arr[i]+len) > 0){
+                aux = arr[i];
+                arr[i] = arr[j];
+                arr[j++] = aux;
+            }
+        }
+        arr[0] = arr[j-1];
+        arr[j-1] = NULL;
+        quickSort(arr, len);
+        quickSort(arr+j, len);
+        arr[j-1] = piv;
+    }
+
 }
