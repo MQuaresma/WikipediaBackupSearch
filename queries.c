@@ -209,7 +209,7 @@ char* article_title(long article_id, TAD_istruct qs){
 
 
 // Devolve uma lista de endereços cujo o título tem o prefixo dado.
-char** title_with_prefix(char* prefix, TAD_istruct qs){
+char** titles_with_prefix(char* prefix, TAD_istruct qs){
 
     int n=10, len = strlen(prefix);
     long k, j=0;

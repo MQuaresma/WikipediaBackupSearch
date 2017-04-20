@@ -30,7 +30,7 @@ int main(int argc, char *argv[]){
     printf("%s\n", article_title(25507, qs));
     printf("%s\n", article_title(1111, qs));
     printf("Title with prefix \"Anax\": ");
-    ttp = title_with_prefix("Anax", qs);
+    ttp = titles_with_prefix("Anax", qs);
     while(*ttp) printf("%s, ", *ttp++);
     printf("\n");
     printf("%s\n", article_timestamp(12,763082287, qs));
