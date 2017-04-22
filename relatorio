@@ -1,0 +1,35 @@
+--Introdução:
+	Este trabalho foi realizado no intuito da disciplina de Laboratórios de Informática 3, no qual nos foi pedido desenvolver um programa em C que ao receber vários backups da wikipédia, fizesse o parse do xml (usando a biblioteca libxml2), o qual nos dá uma "tree", e que a temos de percorrer de modo a processar os dados. Após o processamento dos dados são pedidos ao nosso programa várias "perguntas" ao qual temos de responder corretamente.
+	Contudo, os principais objetivos deste trabalho é não só responder corretamente mas também em tempo útil.
+
+--Desenvolvimento:
+
+	--Estrutura Principal(struct TCD_istruct):
+	A nossa estrutura(struct TCD_istruct) está dividida em duas partes(estruturas), uma que guarda informação sobre os artigos(struct articTable) e outra que quarda informação sobre os contribuidores(struct contribTree).Esta divisão deve-se a termos entendido que podiamos responder às interrogações 4 e 5 independentemente das restasntes interrogações, bem como responder às interrogações 3,6,7,8,9,10 com uma só estrutura. Para além disso a estrutura principal possui dois "longs" que guardam o número de artigos únicos(artUn) e o número de artigos totais(artTot). Estes dois "longs" são calculados durante o load de modo a que no final do mesmo seja possível responder às duas primeiras interrogações em tempo constante.
+	  
+	--Estrutura dos artigos(struct articTable):
+	Nesta estrutura temos dois "longs" no qual um deles tem o número de artigos na hash table (nArt) e o outro tem o tamanho da hash table (size). Estes dois valores permitem-nos saber o racio da hash table de modo a sabermos quando necessita de ser redimensionada para evitar que o tempo de execução aumente devido a existir listas ligadas com grande comprimento. Como já deu para perceber a hash table (struct articleInfo **) é uma closed adressing hash table, e escolhemos visto ser mais eficiente e de mais fácil implementação que a open adressing hash table.
+		
+		--Artigo(struct articleInfo):
+		Cada estrutura artigo quarda o id do artigo (long id) de modo a ser possivel responder às interrogações 6,8 e 10. Guarda também o seu título mais recente(xmlChar *title) visto ser necessario para as interrogações 7 e 8. Tem também um dicionário com as revisões do artigo(struct revDict *). Por fim tem 3 "longs" (nRev,len,word) que guardam respetivamente o número de revisões no dicionário, o numero de caracteres da última revisão e o número de palavras também da mais recente revisão.	
+				
+			--revisões(struct revDict):
+			Cada estrutura possui o id da revisão(long id) e o timestamp(xmlChar *timeStamp) para responder à interrogação 10.
+
+	--Estrutura dos contribuidores(struct contribTree):
+	Para os contribuidores decidimos escolher uma árvore de procura pelo id dos mesmos para que a interrogação 5 seja eficiente apesar de prejudicar a eficiencia da interrogação 4. Em cada nó da árvore temos o id do contribuidor (long id), o nome do contribuidor (xmlChar *nome) e o número de revisões realizadas pelo mesmo(int nRev), permitindo assim responder às interrogações 4 e 5.
+
+	--Interrogações:
+		--Interrogação 1:
+		--Interrogação 2:
+		--Interrogação 3:
+		--Interrogação 4:
+		--Interrogação 5:
+		--Interrogação 6:
+		--Interrogação 7:
+		--Interrogação 8:
+		--Interrogação 9:
+		--Interrogação 10:
+
+--Conclusão:
+	Em conlusão, achamos que realizamos um bom trabalho e um bom programa visto os tempos de execução do mesmo serem próximos ou até melhores(em alguns casos) do que os tempos disponibilizados pelos docentes.
