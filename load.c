@@ -44,8 +44,7 @@ TAD_istruct processPages(TAD_istruct qs, xmlNodePtr cur, xmlDocPtr doc){
 /*
 * Adiciona um artico à hashTabale
 * @param articCollect apontador para hashTabale
-* @param nodo apontador de nós do xml só de um artico
-* @return 0 se não adicionei, 1 se adicionei
+* @param nodo apontador de nós do xml só de um artico * @return 0 se não adicionei, 1 se adicionei
 */
 int hashAdd(TAD_istruct st, xmlNodePtr nodo, xmlDocPtr doc){
 
@@ -100,7 +99,7 @@ int hashAdd(TAD_istruct st, xmlNodePtr nodo, xmlDocPtr doc){
  * Redimensiona a hashTabale de articleInfo *
  * @param articCollect apontador para a hashTabale
  */
- void resize(articTableP articCollect){
+void resize(articTableP articCollect){
           long elem = 0, i=0, hashVal;
           long newSize = 2*articCollect->size;
           articleInfoP *newP = (articleInfoP *)calloc(newSize,sizeof(void *));

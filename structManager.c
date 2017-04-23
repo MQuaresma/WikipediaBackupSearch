@@ -52,7 +52,7 @@ void cleanContribTree(contribTreeP a){
 }
 
 TAD_istruct clean(TAD_istruct qs){
- 	  long i=0,j=0;
+    long i=0,j=0;
           articleInfoP aux = NULL, next = NULL;
 
           for(i=0; i<(qs->articCollect)->size; i++){

@@ -27,8 +27,8 @@ typedef struct revDict{
   @param next Apontador para o artigo seguinte
  */
 typedef struct articleInfo {
-	long id;
-	xmlChar *title;
+	long id; 
+    xmlChar *title;
 	struct revDict *revs;
 	long nRev;
 	long len;
