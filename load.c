@@ -1,6 +1,13 @@
 #include "structManager.h"
 #include <string.h>
 
+/*
+ * Verifica se a chave(id) dada já se encontra no dicionário
+ * @param dict Dicionário com par id, timestamp da revisao
+ * @param nRev nro de entradas presentes no dicionário
+ * @param idT chave a procurar no dicionário
+ * @return 1 se nao se encontrar, 0 caso contrario
+ */
 int newEntry(revDictP dict, long nRev, long idT){
 
     int i;
@@ -11,7 +18,12 @@ int newEntry(revDictP dict, long nRev, long idT){
 
 }
 
-// Conta o número de palavras total e o número de caracteres total de uma String.
+/* 
+ * Conta o número de palavras total e o número de caracteres total de uma String.
+ * @param s string a percorrer
+ * @param car apontador para o long que guarda o nro de caracteres
+ * @param pal apontador para o long que guarda o nro de palavras
+ */
 void contarWL(char s[], long *car, long *pal){
 
     int i=0, p=0;
@@ -27,7 +39,13 @@ void contarWL(char s[], long *car, long *pal){
 
 }
 
-
+/*
+ * Percorre o ficheiro xml e processa as paginas encontradas usando a tag page
+ * @param qs estrutura que guarda a informação ja recolhida relativa aos snapshots
+ * @param cur apontador para os nodos que se encontram aos niveis das paginas
+ * @param doc Apontador para o ficheiro xml a ser procesado
+ * @return Devolve a estrutura que resulta de adicionar a informaçao presente no snapshot atual
+ */
 TAD_istruct processPages(TAD_istruct qs, xmlNodePtr cur, xmlDocPtr doc){
 
 	while(cur){												//percorre o doc xml na totalidade
@@ -42,10 +60,11 @@ TAD_istruct processPages(TAD_istruct qs, xmlNodePtr cur, xmlDocPtr doc){
 
 
 /*
-* Adiciona um artico à hashTabale
-* @param articCollect apontador para hashTabale
-* @param nodo apontador de nós do xml só de um artico * @return 0 se não adicionei, 1 se adicionei
-*/
+ * Adiciona um artico à hashTabale
+ * @param articCollect apontador para hashTable
+ * @param nodo apontador de nós do xml só de um artico 
+ * @return 0 se não foi adicionado um novo artigo, 1 caso contrário
+ */
 int hashAdd(TAD_istruct st, xmlNodePtr nodo, xmlDocPtr doc){
 
     int success=0, found=0;
@@ -122,9 +141,16 @@ void resize(articTableP articCollect){
 
 
 /*
- * Regista um novo contribuidor e revisao
- *
-*/
+ * Regista uma nova contrubuição e revisao
+ * @param dict Dicionário com par id, timestamp da revisao
+ * @param tree Árvore binária com os contribuidores ja encontrados
+ * @param nodo Apontador para a tag do artigo(page)
+ * @param doc Apontador para o ficheiro xml a ser procesado
+ * @param len Apontador para o (maior) tamanho do artigo atual
+ * @param words Apontador para o (maior) nro de palavras do artigo atual
+ * @param nRev Nro de revisoes, ja conhecidas, do artigo atual
+ * @return 1 caso se trate de uma nova revisao, 0 caso contrario
+ */
 int addRev(revDictP *dict, contribTreeP *tree, xmlNodePtr cur, xmlDocPtr doc, long *len, long *words, long nRev){
     
     xmlChar *temp, *userN;
@@ -134,10 +160,10 @@ int addRev(revDictP *dict, contribTreeP *tree, xmlNodePtr cur, xmlDocPtr doc, lo
     revDictP auxDict = NULL;
     
     cur = cur->xmlChildrenNode;
-    while(cur && new){
-        if(!xmlStrcmp(cur->name, (xmlChar *)"id")){                     //id found
+    while(cur && new){                                                  //para caso a revisao ja tenha sido adicionada
+        if(!xmlStrcmp(cur->name, (xmlChar *)"id")){                     //id encontrado
             temp = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
-            if(temp){                                                   //non empty node
+            if(temp){                                                 
                 sscanf((char*)temp, "%ld", &idT);
                 xmlFree(temp);
                 if((new = newEntry(*dict, nRev, idT))){
@@ -150,17 +176,17 @@ int addRev(revDictP *dict, contribTreeP *tree, xmlNodePtr cur, xmlDocPtr doc, lo
                     }
                 }
             }    
-        }else if(!xmlStrcmp(cur->name, (xmlChar *)"timestamp") && new){        //add revision timestamp
+        }else if(!xmlStrcmp(cur->name, (xmlChar *)"timestamp") && new){        
             temp = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
-            if(temp){                                                   //non empty node
+            if(temp){                                                   
                 ((*dict)[nRev]).timeStamp = xmlStrdup(temp);    
                 xmlFree(temp);
             }
         }else if(!xmlStrcmp(cur->name, (xmlChar*)"contributor")){
             aux = cur->xmlChildrenNode;
             while(aux){
-                if(!xmlStrcmp(aux->name, (xmlChar *)"username")) userN = xmlNodeListGetString(doc, aux->xmlChildrenNode, 1);    //found user
-                else if(!xmlStrcmp(aux->name, (xmlChar *)"id")){                                                            //found user id
+                if(!xmlStrcmp(aux->name, (xmlChar *)"username")) userN = xmlNodeListGetString(doc, aux->xmlChildrenNode, 1);    //user encontrado
+                else if(!xmlStrcmp(aux->name, (xmlChar *)"id")){                                                                //id user encontrado
                     temp = xmlNodeListGetString(doc, aux->xmlChildrenNode, 1);
                     if(temp){
                         sscanf((char*)temp, "%ld", &idT);
@@ -187,13 +213,19 @@ int addRev(revDictP *dict, contribTreeP *tree, xmlNodePtr cur, xmlDocPtr doc, lo
     return new;
 }
 
+/*
+ * Adiciona um contribuidor à árvore binária de procura
+ * @param tree Apontador para a árvore binária
+ * @param id Id do contribuidor a adicionar
+ * @param nome Nome do contribuidor a adicionar
+ */
 void addBTree(contribTreeP *tree, long id, xmlChar *nome){
 
     while(*tree && (*tree)->id != id){
         if((*tree)->id > id) tree = &((*tree)->left);
         else tree = &((*tree)->right);
     }
-    if((*tree) && (*tree)->id == id) (*tree)->nRev ++; 
+    if((*tree) && (*tree)->id == id) (*tree)->nRev ++;  //ja existe logo adiciona nova revisao/contribuiçao
     else{
         *tree =(contribTreeP)malloc(sizeof(struct contribTree));
         (*tree)->id = id;
@@ -203,6 +235,12 @@ void addBTree(contribTreeP *tree, long id, xmlChar *nome){
     }
 }
 
+/*
+ * Funçao de hash dos id's de artigos
+ * @param id Valor a ser usado para o calculo do hash
+ * @param size Tamanho da tabela de hash
+ * @return output da funçao de hash
+ */
 long hash(long id, long size){
 	return id % size; 
 }

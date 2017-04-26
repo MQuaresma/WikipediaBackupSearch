@@ -6,24 +6,44 @@ long* runTree(contribTreeP tree);
 contribTreeP *myRealloc(contribTreeP *oStack, int size, int nSize);
 void quickSort(char **arr, int len);
 
+/*
+ * Devolve o nro total de artigos encontrados
+ * @param qs Estrutura com a informaçao processada
+ * @return Nro total de artigos
+ */
 long all_articles(TAD_istruct qs){
 
     return qs->artTot;
 
 }
 
+/*
+ * Devolve o nro total de artigos unicos encontrados
+ * @param qs Estrutura com a informaçao processada
+ * @return Nro total de artigos unicos
+ */
 long unique_articles(TAD_istruct qs){
 
     return qs->artUn;
 
 }
 
+/*
+ * Calcula os 10 contribuidores com maior nro de revisoes efetuadas
+ * @param qs Estrutura com a informaçao processada
+ * @return Apontador para um array ordenado, por ordem decrescente, para os id's dos contribuidores
+ */
 long *top_10_contributors(TAD_istruct qs){
 
     return runTree(qs->contribuitors);
 
 }
 
+/*
+ * Percorre a árvore binária dos contribuidores e calcula os dez mais ativos
+ * @param tree Árvore binária dos contribuidores
+ * @return Apontador para um array ordenado, por ordem decrescente, para os id's dos contribuidores
+ */
 long* runTree(contribTreeP tree){
 
     long *idTop, idTemp, sp = 0, size = 100;
@@ -65,6 +85,7 @@ long* runTree(contribTreeP tree){
     return idTop;
 
 }
+
 
 contribTreeP *myRealloc(contribTreeP *oStack, int size, int nSize){
 
@@ -109,12 +130,11 @@ char* article_timestamp(long article_id, long revision_id, TAD_istruct qs){
 
 
 /*
- *Funçao que devolve um array de ids de artigo: 
- *    caso b=0: ordenado do maior para o menor artigo em termos de tamanho
- *    caso b=1: ordenado do maior para o menor artigo em termos de palavras
- *@param n tamanho do array a devolver
- *@param b b=0 ordenado por tamanho, b=1 ordenado por palavras
- *@param qs estrutura com os dados dos artigos,etc
+ *Funçao que devolve um array de ids de artigo
+ * @param n tamanho do array a devolver
+ * @param b b=0 ordenado por tamanho, b=1 ordenado por palavras
+ * @param qs estrutura com os dados dos artigos
+ * @return array com os id's dos artigos ordenados segundo o criterio dado
  */
 long* devolveArrayOrd(int n, int b, TAD_istruct qs){
         int i,j,w;
@@ -153,7 +173,11 @@ long* devolveArrayOrd(int n, int b, TAD_istruct qs){
 
 
 
-// soma de todas as revisões
+/*
+ * Soma de todas as revisões
+ * @param qs estrutura com os dados dos artigos
+ * @return Nro de revisoes encontradas nos snapshots
+ */
 long all_revisions(TAD_istruct qs){
     articleInfoP i;
     long k,soma=0;
@@ -170,7 +194,12 @@ long all_revisions(TAD_istruct qs){
 
 
 
-//Devolve 
+/*
+ * Devolve o nome do contribuidor identificado pelo id dado
+ * @param id Id a procurar 
+ * @param qs estrutura com os dados dos artigos
+ * @return Apontador para o nome do contribuidor caso tenha sido encontrado, NULL caso contrario
+ */
 char* contributor_name(long contributor_id, TAD_istruct qs){
 
   contribTreeP nodo;
@@ -189,8 +218,12 @@ char* contributor_name(long contributor_id, TAD_istruct qs){
 
 
 
-//Devolve o nome de um artigo, através do id dado.
-
+/*
+ * Devolve o nome de um artigo, através do id dado
+ * @param id Id a procurar 
+ * @param qs estrutura com os dados dos artigos
+ * @return Apontador para o nome do artigo caso tenha sido encontrado, NULL caso contrario
+ */
 char* article_title(long article_id, TAD_istruct qs){
   articleInfoP i;
   long k, flag=0;
@@ -208,7 +241,12 @@ char* article_title(long article_id, TAD_istruct qs){
 }
 
 
-// Devolve uma lista de endereços cujo o título tem o prefixo dado.
+/* 
+ * Devolve uma lista de endereços, ordenados por ordem alfabetica, cujo o título tem o prefixo dado.
+ * @param prefix Prefixo a procurar
+ * @param qs estrutura com os dados dos artigos
+ * @return Array de apontadores (ordenado) para os titulos com o prefixo dado
+ */
 char** titles_with_prefix(char* prefix, TAD_istruct qs){
 
     int n=10, len = strlen(prefix);
@@ -234,6 +272,11 @@ char** titles_with_prefix(char* prefix, TAD_istruct qs){
     return guarda;
 }
 
+/*
+ * Ordena um array de strings por ordem alfabetica
+ * @param arr Array de apontadores para arrays de caracteres
+ * @param len tamanho do prefixo, i.e. ponto a partir do qual e efetuada a comparaçao
+ */
 void quickSort(char **arr, int len){
 
     char *piv, *aux;

@@ -38,9 +38,9 @@ typedef struct articleInfo {
 
 /*
  * Hash table fechada com artigos
- @param racio Percentagem de ocupaçao da hash table
- @param size Nro de posiçoes da tabela
- @param table Lista de apontadores para a estrutura do ficheiro
+ * @param nArt Nro de entradas na tabela de hash
+ * @param size Nro de posiçoes da tabela
+ * @param table Lista de apontadores para as listas ligadas de artigos
  */
 typedef struct articTable{
 	long nArt;
@@ -50,11 +50,11 @@ typedef struct articTable{
 
 /*
  * Arvore binaria para guardar os contribuidores ordenados por id
- @param id ID do contribuidor
- @param nome Nome do contribuidor
- @param nRev Nro de revisoes efetuadas pelo contribuidor
- @param left Apontador para o contribuidor da esquerda(menor id)
- @param right Apontador para o contribuidor da direita(maior id)
+ * @param id ID do contribuidor
+ * @param nome Nome do contribuidor
+ * @param nRev Nro de revisoes efetuadas pelo contribuidor
+ * @param left Apontador para o contribuidor da esquerda(menor id)
+ * @param right Apontador para o contribuidor da direita(maior id)
  */
 typedef struct contribTree{
 	long id;
@@ -66,11 +66,10 @@ typedef struct contribTree{
 
 /*
  * Estrutura principal com toda a informaçao necessario ao processamento das queries
- @param artUn Nro de artigos unicos
- @param artTot Nro de total de artigos 
- @param articCollect Artigos contidos nos snapshots processados
- @param contribuitors Contribuidores envolvidos nas snapshots
- @param top10Contr Array com os 10 contribuidores com maior nro de revisoes efetuadas
+ * @param artUn Nro de artigos unicos
+ * @param artTot Nro de total de artigos 
+ * @param articCollect Artigos contidos nos snapshots processados
+ * @param contribuitors Contribuidores envolvidos nas snapshots
  */
 struct TCD_istruct {
 	long artUn, artTot;
