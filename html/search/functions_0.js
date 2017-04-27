@@ -1,0 +1,9 @@
+var searchData=
+[
+  ['addbtree',['addBTree',['../load_8c.html#afca411dcaf1d91ffc45932ca936a65f6',1,'addBTree(contribTreeP *tree, long id, xmlChar *nome):&#160;load.c'],['../structManager_8h.html#afca411dcaf1d91ffc45932ca936a65f6',1,'addBTree(contribTreeP *tree, long id, xmlChar *nome):&#160;load.c']]],
+  ['addrev',['addRev',['../load_8c.html#aa67cb91f10a4cce7f99080a8e370e1df',1,'addRev(revDictP *dict, contribTreeP *tree, xmlNodePtr cur, xmlDocPtr doc, long *len, long *words, long nRev):&#160;load.c'],['../structManager_8h.html#aa67cb91f10a4cce7f99080a8e370e1df',1,'addRev(revDictP *dict, contribTreeP *tree, xmlNodePtr cur, xmlDocPtr doc, long *len, long *words, long nRev):&#160;load.c']]],
+  ['all_5farticles',['all_articles',['../interface_8h.html#a29aec2da0c08c10b18ef83ee5feab3f4',1,'all_articles(TAD_istruct qs):&#160;queries.c'],['../queries_8c.html#a29aec2da0c08c10b18ef83ee5feab3f4',1,'all_articles(TAD_istruct qs):&#160;queries.c']]],
+  ['all_5frevisions',['all_revisions',['../interface_8h.html#a92fea6d0b31738aa1be43e492c37cb3d',1,'all_revisions(TAD_istruct qs):&#160;queries.c'],['../queries_8c.html#a92fea6d0b31738aa1be43e492c37cb3d',1,'all_revisions(TAD_istruct qs):&#160;queries.c']]],
+  ['article_5ftimestamp',['article_timestamp',['../interface_8h.html#ad4fc297c2cde96e5ed09f21fe0fda0cf',1,'article_timestamp(long article_id, long revision_id, TAD_istruct qs):&#160;queries.c'],['../queries_8c.html#ad4fc297c2cde96e5ed09f21fe0fda0cf',1,'article_timestamp(long article_id, long revision_id, TAD_istruct qs):&#160;queries.c']]],
+  ['article_5ftitle',['article_title',['../interface_8h.html#affb3723e978e6bb1d0d4e2c20cf0b704',1,'article_title(long article_id, TAD_istruct qs):&#160;queries.c'],['../queries_8c.html#affb3723e978e6bb1d0d4e2c20cf0b704',1,'article_title(long article_id, TAD_istruct qs):&#160;queries.c']]]
+];
