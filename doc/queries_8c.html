@@ -114,6 +114,13 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Devolve o nro total de artigos encontrados </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">qs</td><td>Estrutura com a informaçao processada </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Nro total de artigos </dd></dl>
 
 </div>
 </div>
@@ -132,6 +139,13 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Nro total de revisoes presentes nos snapshots </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">qs</td><td>Estrutura com os dados dos artigos </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Nro de revisoes encontradas nos snapshots </dd></dl>
 
 </div>
 </div>
@@ -166,6 +180,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Devolve o timestamp de uma determinada revisao de um artigo </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">article_id</td><td>id do artigo no qual pertence a revisão </td></tr>
+    <tr><td class="paramname">revision_id</td><td>Id da revisão </td></tr>
+    <tr><td class="paramname">qs</td><td>Estrutura com os dados dos artigos </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>String com o timestamp ou null caso nao exista a revisão/artigo pedido. </dd></dl>
 
 </div>
 </div>
@@ -194,6 +217,14 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Devolve o nome de um artigo, através do id dado </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>Id a procurar </td></tr>
+    <tr><td class="paramname">qs</td><td>Estrutura com os dados dos artigos </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Apontador para o nome do artigo caso tenha sido encontrado, NULL caso contrario </dd></dl>
 
 </div>
 </div>
@@ -222,6 +253,14 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Devolve o nome do contribuidor identificado pelo id dado </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>Id a procurar </td></tr>
+    <tr><td class="paramname">qs</td><td>Estrutura com os dados dos artigos </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Apontador para o nome do contribuidor caso tenha sido encontrado, NULL caso contrario </dd></dl>
 
 </div>
 </div>
@@ -256,6 +295,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Funçao que devolve um array de ids de artigo </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">n</td><td>Tamanho do array a devolver </td></tr>
+    <tr><td class="paramname">b</td><td>b=0 ordenado por tamanho, b=1 ordenado por palavras </td></tr>
+    <tr><td class="paramname">qs</td><td>Estrutura com os dados dos artigos </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Array com os id's dos artigos ordenados segundo o criterio dado </dd></dl>
 
 </div>
 </div>
@@ -318,6 +366,13 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Ordena um array de strings por ordem alfabetica </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">arr</td><td>Array de apontadores para arrays de caracteres </td></tr>
+    <tr><td class="paramname">len</td><td>Tamanho do prefixo, i.e. ponto a partir do qual e efetuada a comparaçao </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -336,6 +391,13 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Percorre a árvore binária dos contribuidores e calcula os dez mais ativos </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tree</td><td>Árvore binária dos contribuidores </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Apontador para um array ordenado, por ordem decrescente, para os id's dos contribuidores </dd></dl>
 
 </div>
 </div>
@@ -364,6 +426,14 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Devolve uma lista de endereços, ordenados por ordem alfabetica, cujo o título tem o prefixo dado. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">prefix</td><td>Prefixo a procurar </td></tr>
+    <tr><td class="paramname">qs</td><td>Estrutura com os dados dos artigos </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Array de apontadores (ordenado) para os titulos com o prefixo dado </dd></dl>
 
 </div>
 </div>
@@ -382,6 +452,13 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Calcula os 10 contribuidores com maior nro de revisoes efetuadas </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">qs</td><td>Estrutura com a informaçao processada </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Apontador para um array ordenado, por ordem decrescente, para os id's dos contribuidores </dd></dl>
 
 </div>
 </div>
@@ -400,6 +477,13 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Função que devolve um array com os ids dos 20 artigos maiores </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">qs</td><td>Estrutura com os dados dos artigos </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Array, ordenado por ordem decrescente do tamanho, com os id's dos artigos </dd></dl>
 
 </div>
 </div>
@@ -428,6 +512,14 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Função que devolve um array com os ids dos N artigos com mais palavras </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">n</td><td>Tamanho do array a devolver, ou seja N artigos com mais palavras </td></tr>
+    <tr><td class="paramname">qs</td><td>Estrutura com os dados dos artigos </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>array com os id's dos artigos ordenados por ordem decrescente do numero de palavras </dd></dl>
 
 </div>
 </div>
@@ -446,6 +538,13 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Devolve o nro total de artigos unicos encontrados </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">qs</td><td>Estrutura com a informaçao processada </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Nro total de artigos unicos </dd></dl>
 
 </div>
 </div>

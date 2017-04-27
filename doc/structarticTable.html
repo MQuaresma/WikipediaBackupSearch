@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Grupo 19: TCD_istruct Struct Reference</title>
+<title>Grupo 19: articTable Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -60,9 +60,9 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="structTCD__istruct-members.html">List of all members</a>  </div>
+<a href="structarticTable-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">TCD_istruct Struct Reference</div>  </div>
+<div class="title">articTable Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -70,66 +70,59 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a298cf242fe3a0e1ef9f140e29f64c1a2"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTCD__istruct.html#a298cf242fe3a0e1ef9f140e29f64c1a2">artUn</a></td></tr>
-<tr class="separator:a298cf242fe3a0e1ef9f140e29f64c1a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a691c8eb16f29cd465d7fa223f6b1e7b1"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTCD__istruct.html#a691c8eb16f29cd465d7fa223f6b1e7b1">artTot</a></td></tr>
-<tr class="separator:a691c8eb16f29cd465d7fa223f6b1e7b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f9208d8367be4783b835f1e8e5f2473"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structManager_8h.html#ab2c9641bdc4a8a9393a17d29ec629b4c">articTableP</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTCD__istruct.html#a0f9208d8367be4783b835f1e8e5f2473">articCollect</a></td></tr>
-<tr class="separator:a0f9208d8367be4783b835f1e8e5f2473"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a846900615cd52e928a62344551d2fe25"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structManager_8h.html#a51f3fbc7f8f399f4b8780738866f035e">contribTreeP</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTCD__istruct.html#a846900615cd52e928a62344551d2fe25">contribuitors</a></td></tr>
-<tr class="separator:a846900615cd52e928a62344551d2fe25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adeee53500da577a4533f7620d6f6b1ca"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structarticTable.html#adeee53500da577a4533f7620d6f6b1ca">nArt</a></td></tr>
+<tr class="separator:adeee53500da577a4533f7620d6f6b1ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ffea310e4ebc10ad3b91cc4f94dfc86"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structarticTable.html#a2ffea310e4ebc10ad3b91cc4f94dfc86">size</a></td></tr>
+<tr class="separator:a2ffea310e4ebc10ad3b91cc4f94dfc86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac930f4f434ff673040a42083179388eb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structManager_8h.html#a1985c38b2eee79564610ca9feb886ec5">articleInfoP</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structarticTable.html#ac930f4f434ff673040a42083179388eb">table</a></td></tr>
+<tr class="separator:ac930f4f434ff673040a42083179388eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a0f9208d8367be4783b835f1e8e5f2473"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0f9208d8367be4783b835f1e8e5f2473">&#9670;&nbsp;</a></span>articCollect</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Hash table fechada com artigos </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">nArt</td><td>Nro de entradas na tabela de hash </td></tr>
+    <tr><td class="paramname">size</td><td>Nro de posiçoes da tabela </td></tr>
+    <tr><td class="paramname">table</td><td>Lista de apontadores para as listas ligadas de artigos </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><h2 class="groupheader">Member Data Documentation</h2>
+<a id="adeee53500da577a4533f7620d6f6b1ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adeee53500da577a4533f7620d6f6b1ca">&#9670;&nbsp;</a></span>nArt</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structManager_8h.html#ab2c9641bdc4a8a9393a17d29ec629b4c">articTableP</a> TCD_istruct::articCollect</td>
+          <td class="memname">long articTable::nArt</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a691c8eb16f29cd465d7fa223f6b1e7b1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a691c8eb16f29cd465d7fa223f6b1e7b1">&#9670;&nbsp;</a></span>artTot</h2>
+<a id="a2ffea310e4ebc10ad3b91cc4f94dfc86"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ffea310e4ebc10ad3b91cc4f94dfc86">&#9670;&nbsp;</a></span>size</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">long TCD_istruct::artTot</td>
+          <td class="memname">long articTable::size</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a298cf242fe3a0e1ef9f140e29f64c1a2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a298cf242fe3a0e1ef9f140e29f64c1a2">&#9670;&nbsp;</a></span>artUn</h2>
+<a id="ac930f4f434ff673040a42083179388eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac930f4f434ff673040a42083179388eb">&#9670;&nbsp;</a></span>table</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">long TCD_istruct::artUn</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a846900615cd52e928a62344551d2fe25"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a846900615cd52e928a62344551d2fe25">&#9670;&nbsp;</a></span>contribuitors</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structManager_8h.html#a51f3fbc7f8f399f4b8780738866f035e">contribTreeP</a> TCD_istruct::contribuitors</td>
+          <td class="memname"><a class="el" href="structManager_8h.html#a1985c38b2eee79564610ca9feb886ec5">articleInfoP</a>* articTable::table</td>
         </tr>
       </table>
 </div><div class="memdoc">

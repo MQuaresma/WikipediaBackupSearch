@@ -6,25 +6,25 @@
 #include "interface.h"
 #define HASHSIZE 100013
 
-/*
- * Dicionario que guarda uma revisao de determinado artigo
-  @param id ID da revisao
-  @param timeStamp altura em que a revisao foi efetuada
+/**
+Dicionario que guarda uma revisao de determinado artigo
+@param id ID da revisao
+@param timeStamp altura em que a revisao foi efetuada
  */
 typedef struct revDict{
 	long id;
 	xmlChar *timeStamp;
 }*revDictP;
 
-/*
- * Info essencial associada a cada artigo
-  @param id ID do artigo
-  @param title Titulo do artigo
-  @param revs Lista com todas as revisoes feitas ao artigo
-  @param nRev Nro de revisoes totatis feitas ao artigo
-  @param len Tamanho do artigo
-  @param words Nro de palavras do artigo
-  @param next Apontador para o artigo seguinte
+/**
+Info essencial associada a cada artigo
+@param id ID do artigo
+@param title Titulo do artigo
+@param revs Lista com todas as revisoes feitas ao artigo
+@param nRev Nro de revisoes totatis feitas ao artigo
+@param len Tamanho do artigo
+@param words Nro de palavras do artigo
+@param next Apontador para o artigo seguinte
  */
 typedef struct articleInfo {
 	long id; 
@@ -36,11 +36,11 @@ typedef struct articleInfo {
     struct articleInfo *next;
 }*articleInfoP;
 
-/*
- * Hash table fechada com artigos
- * @param nArt Nro de entradas na tabela de hash
- * @param size Nro de posiçoes da tabela
- * @param table Lista de apontadores para as listas ligadas de artigos
+/**
+Hash table fechada com artigos
+@param nArt Nro de entradas na tabela de hash
+@param size Nro de posiçoes da tabela
+@param table Lista de apontadores para as listas ligadas de artigos
  */
 typedef struct articTable{
 	long nArt;
@@ -48,13 +48,13 @@ typedef struct articTable{
 	articleInfoP *table;
 }*articTableP;
 
-/*
- * Arvore binaria para guardar os contribuidores ordenados por id
- * @param id ID do contribuidor
- * @param nome Nome do contribuidor
- * @param nRev Nro de revisoes efetuadas pelo contribuidor
- * @param left Apontador para o contribuidor da esquerda(menor id)
- * @param right Apontador para o contribuidor da direita(maior id)
+/**
+Árvore binária para guardar os contribuidores ordenados por id
+@param id ID do contribuidor
+@param nome Nome do contribuidor
+@param nRev Nro de revisoes efetuadas pelo contribuidor
+@param left Apontador para o contribuidor da esquerda(menor id)
+@param right Apontador para o contribuidor da direita(maior id)
  */
 typedef struct contribTree{
 	long id;
@@ -64,12 +64,12 @@ typedef struct contribTree{
 	struct contribTree *right;
 }*contribTreeP;
 
-/*
- * Estrutura principal com toda a informaçao necessario ao processamento das queries
- * @param artUn Nro de artigos unicos
- * @param artTot Nro de total de artigos 
- * @param articCollect Artigos contidos nos snapshots processados
- * @param contribuitors Contribuidores envolvidos nas snapshots
+/**
+Estrutura principal com toda a informaçao necessario ao processamento das queries
+@param artUn Nro de artigos unicos
+@param artTot Nro de total de artigos 
+@param articCollect Artigos contidos nos snapshots processados
+@param contribuitors Contribuidores envolvidos nas snapshots
  */
 struct TCD_istruct {
 	long artUn, artTot;

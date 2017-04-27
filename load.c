@@ -1,12 +1,12 @@
 #include "structManager.h"
 #include <string.h>
 
-/*
- * Verifica se a chave(id) dada já se encontra no dicionário
- * @param dict Dicionário com par id, timestamp da revisao
- * @param nRev nro de entradas presentes no dicionário
- * @param idT chave a procurar no dicionário
- * @return 1 se nao se encontrar, 0 caso contrario
+/**
+Verifica se a chave(id) dada já se encontra no dicionário
+@param dict Dicionário com par id, timestamp da revisao
+@param nRev nro de entradas presentes no dicionário
+@param idT chave a procurar no dicionário
+@return 1 se nao se encontrar, 0 caso contrario
  */
 int newEntry(revDictP dict, long nRev, long idT){
 
@@ -18,11 +18,11 @@ int newEntry(revDictP dict, long nRev, long idT){
 
 }
 
-/* 
- * Conta o número de palavras total e o número de caracteres total de uma String.
- * @param s string a percorrer
- * @param car apontador para o long que guarda o nro de caracteres
- * @param pal apontador para o long que guarda o nro de palavras
+/** 
+Conta o número de palavras total e o número de caracteres total do array de caracteres dado
+@param s string a percorrer
+@param car apontador para o long que guarda o nro de caracteres
+@param pal apontador para o long que guarda o nro de palavras
  */
 void contarWL(char s[], long *car, long *pal){
 
@@ -39,12 +39,12 @@ void contarWL(char s[], long *car, long *pal){
 
 }
 
-/*
- * Percorre o ficheiro xml e processa as paginas encontradas usando a tag page
- * @param qs estrutura que guarda a informação ja recolhida relativa aos snapshots
- * @param cur apontador para os nodos que se encontram aos niveis das paginas
- * @param doc Apontador para o ficheiro xml a ser procesado
- * @return Devolve a estrutura que resulta de adicionar a informaçao presente no snapshot atual
+/**
+Percorre o ficheiro xml e processa as paginas encontradas (usando a tag page)
+@param qs estrutura que guarda a informação ja recolhida relativa aos snapshots
+@param cur apontador para os nodos que se encontram aos niveis das paginas
+@param doc Apontador para o ficheiro xml a ser procesado
+@return Devolve a estrutura que resulta de adicionar a informaçao presente no snapshot atual
  */
 TAD_istruct processPages(TAD_istruct qs, xmlNodePtr cur, xmlDocPtr doc){
 
@@ -59,17 +59,17 @@ TAD_istruct processPages(TAD_istruct qs, xmlNodePtr cur, xmlDocPtr doc){
 }
 
 
-/*
- * Adiciona um artico à hashTabale
- * @param articCollect apontador para hashTable
- * @param nodo apontador de nós do xml só de um artico 
- * @return 0 se não foi adicionado um novo artigo, 1 caso contrário
+/**
+Adiciona um artigo à hashTable
+@param articCollect Apontador para hashTable
+@param nodo Apontador de nós do xml só de um artico 
+@return 0 se não foi adicionado um novo artigo, 1 caso contrário
  */
 int hashAdd(TAD_istruct st, xmlNodePtr nodo, xmlDocPtr doc){
 
     int success=0, found=0;
     long ind, id;
-    xmlChar * title = NULL;
+    xmlChar *title = NULL;
     xmlNodePtr nodoRev = NULL;
     articleInfoP newArtic = NULL, aux = NULL, prev = NULL;
 
@@ -78,7 +78,7 @@ int hashAdd(TAD_istruct st, xmlNodePtr nodo, xmlDocPtr doc){
         while(nodo){    
             if(!xmlStrcmp(nodo->name,(const xmlChar*)"title")) title = xmlNodeListGetString(doc, nodo->xmlChildrenNode, 1);
             else if(!xmlStrcmp(nodo->name,(const xmlChar*)"id")){
-                xmlChar * name = xmlNodeListGetString(doc, nodo->xmlChildrenNode, 1);
+                xmlChar *name = xmlNodeListGetString(doc, nodo->xmlChildrenNode, 1);
                 sscanf((char*)name,"%ld",&(id));
                 if(name)xmlFree(name);
             }else if(!xmlStrcmp(nodo->name,(const xmlChar*)"revision")) nodoRev = nodo;
@@ -114,9 +114,9 @@ int hashAdd(TAD_istruct st, xmlNodePtr nodo, xmlDocPtr doc){
     return success;
 }
 
-/*
- * Redimensiona a hashTabale de articleInfo *
- * @param articCollect apontador para a hashTabale
+/**
+Redimensiona a hashTable
+@param articCollect Apontador para a hashTable
  */
 void resize(articTableP articCollect){
           long elem = 0, i=0, hashVal;
@@ -140,16 +140,16 @@ void resize(articTableP articCollect){
 }
 
 
-/*
- * Regista uma nova contrubuição e revisao
- * @param dict Dicionário com par id, timestamp da revisao
- * @param tree Árvore binária com os contribuidores ja encontrados
- * @param nodo Apontador para a tag do artigo(page)
- * @param doc Apontador para o ficheiro xml a ser procesado
- * @param len Apontador para o (maior) tamanho do artigo atual
- * @param words Apontador para o (maior) nro de palavras do artigo atual
- * @param nRev Nro de revisoes, ja conhecidas, do artigo atual
- * @return 1 caso se trate de uma nova revisao, 0 caso contrario
+/**
+Regista uma nova contrubuição e revisao
+@param dict Dicionário com par id, timestamp da revisao
+@param tree Árvore binária com os contribuidores ja encontrados
+@param nodo Apontador para a tag do artigo(page)
+@param doc Apontador para o ficheiro xml a ser procesado
+@param len Apontador para o (maior) tamanho do artigo atual
+@param words Apontador para o (maior) nro de palavras do artigo atual
+@param nRev Nro de revisoes, ja conhecidas, do artigo atual
+@return 1 caso se trate de uma nova revisao, 0 caso contrario
  */
 int addRev(revDictP *dict, contribTreeP *tree, xmlNodePtr cur, xmlDocPtr doc, long *len, long *words, long nRev){
     
@@ -213,11 +213,11 @@ int addRev(revDictP *dict, contribTreeP *tree, xmlNodePtr cur, xmlDocPtr doc, lo
     return new;
 }
 
-/*
- * Adiciona um contribuidor à árvore binária de procura
- * @param tree Apontador para a árvore binária
- * @param id Id do contribuidor a adicionar
- * @param nome Nome do contribuidor a adicionar
+/**
+Adiciona um contribuidor à árvore binária de procura
+@param tree Apontador para a árvore binária
+@param id Id do contribuidor a adicionar
+@param nome Nome do contribuidor a adicionar
  */
 void addBTree(contribTreeP *tree, long id, xmlChar *nome){
 
@@ -235,11 +235,11 @@ void addBTree(contribTreeP *tree, long id, xmlChar *nome){
     }
 }
 
-/*
- * Funçao de hash dos id's de artigos
- * @param id Valor a ser usado para o calculo do hash
- * @param size Tamanho da tabela de hash
- * @return output da funçao de hash
+/**
+Funçao de hash dos id's de artigos
+@param id Valor a ser usado para o calculo do hash
+@param size Tamanho da tabela de hash
+@return output da funçao de hash
  */
 long hash(long id, long size){
 	return id % size; 

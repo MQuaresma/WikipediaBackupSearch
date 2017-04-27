@@ -6,10 +6,10 @@ long* runTree(contribTreeP tree);
 contribTreeP *myRealloc(contribTreeP *oStack, int size, int nSize);
 void quickSort(char **arr, int len);
 
-/*
- * Devolve o nro total de artigos encontrados
- * @param qs Estrutura com a informaçao processada
- * @return Nro total de artigos
+/**
+Devolve o nro total de artigos encontrados
+@param qs Estrutura com a informaçao processada
+@return Nro total de artigos
  */
 long all_articles(TAD_istruct qs){
 
@@ -17,10 +17,10 @@ long all_articles(TAD_istruct qs){
 
 }
 
-/*
- * Devolve o nro total de artigos unicos encontrados
- * @param qs Estrutura com a informaçao processada
- * @return Nro total de artigos unicos
+/**
+Devolve o nro total de artigos unicos encontrados
+@param qs Estrutura com a informaçao processada
+@return Nro total de artigos unicos
  */
 long unique_articles(TAD_istruct qs){
 
@@ -28,10 +28,10 @@ long unique_articles(TAD_istruct qs){
 
 }
 
-/*
- * Calcula os 10 contribuidores com maior nro de revisoes efetuadas
- * @param qs Estrutura com a informaçao processada
- * @return Apontador para um array ordenado, por ordem decrescente, para os id's dos contribuidores
+/**
+Calcula os 10 contribuidores com maior nro de revisoes efetuadas
+@param qs Estrutura com a informaçao processada
+@return Apontador para um array ordenado, por ordem decrescente, para os id's dos contribuidores
  */
 long *top_10_contributors(TAD_istruct qs){
 
@@ -39,10 +39,10 @@ long *top_10_contributors(TAD_istruct qs){
 
 }
 
-/*
- * Percorre a árvore binária dos contribuidores e calcula os dez mais ativos
- * @param tree Árvore binária dos contribuidores
- * @return Apontador para um array ordenado, por ordem decrescente, para os id's dos contribuidores
+/**
+Percorre a árvore binária dos contribuidores e calcula os dez mais ativos
+@param tree Árvore binária dos contribuidores
+@return Apontador para um array ordenado, por ordem decrescente, para os id's dos contribuidores
  */
 long* runTree(contribTreeP tree){
 
@@ -99,31 +99,31 @@ contribTreeP *myRealloc(contribTreeP *oStack, int size, int nSize){
 
 }
 
-/*
- *Função que devolve um array com os ids dos 20 artigos maiores (ordenados do maior para o menor)
- * @param qs estrutura com os dados dos artigos
- * @return array com os id's dos artigos ordenados do artigo maior para o menor
+/**
+ *Função que devolve um array com os ids dos 20 artigos maiores
+@param qs Estrutura com os dados dos artigos
+@return Array, ordenado por ordem decrescente do tamanho, com os id's dos artigos
  */
 long* top_20_largest_articles(TAD_istruct qs){
 	return devolveArrayOrd(20,0,qs);
 }
 
-/*
- *Função que devolve um array com os ids dos N artigos com mais palavras (ordenados do maior para o menor)
- * @param n tamanho do array a devolver, ou seja N artigos com mais palavras
- * @param qs estrutura com os dados dos artigos
- * @return array com os id's dos artigos ordenados por ordem decrescente do numero de palavras
+/**
+Função que devolve um array com os ids dos N artigos com mais palavras
+@param n Tamanho do array a devolver, ou seja N artigos com mais palavras
+@param qs Estrutura com os dados dos artigos
+@return array com os id's dos artigos ordenados por ordem decrescente do numero de palavras
  */
 long* top_N_articles_with_more_words(int n, TAD_istruct qs){
 	return devolveArrayOrd(n,1,qs);
 }
 
-/*
+/**
  *Devolve o timestamp de uma determinada revisao de um artigo
- * @param article_id id do artigo no qual pertence a revisão
- * @param revision_id id da revisão
- * @param qs estrutura com os dados dos artigos
- * @return string com o timestamp ou null caso nao exista a revisão ou o artigo pedido.
+@param article_id id do artigo no qual pertence a revisão
+@param revision_id Id da revisão
+@param qs Estrutura com os dados dos artigos
+@return String com o timestamp ou null caso nao exista a revisão/artigo pedido.
  */
 char* article_timestamp(long article_id, long revision_id, TAD_istruct qs){
 	long hashV = hash(article_id,(qs->articCollect)->size);
@@ -147,12 +147,12 @@ char* article_timestamp(long article_id, long revision_id, TAD_istruct qs){
 }
 
 
-/*
+/**
  *Funçao que devolve um array de ids de artigo
- * @param n tamanho do array a devolver
- * @param b b=0 ordenado por tamanho, b=1 ordenado por palavras
- * @param qs estrutura com os dados dos artigos
- * @return array com os id's dos artigos ordenados segundo o criterio dado
+@param n Tamanho do array a devolver
+@param b b=0 ordenado por tamanho, b=1 ordenado por palavras
+@param qs Estrutura com os dados dos artigos
+@return Array com os id's dos artigos ordenados segundo o criterio dado
  */
 long* devolveArrayOrd(int n, int b, TAD_istruct qs){
         int i,j,w;
@@ -191,10 +191,10 @@ long* devolveArrayOrd(int n, int b, TAD_istruct qs){
 
 
 
-/*
- * Soma de todas as revisões
- * @param qs estrutura com os dados dos artigos
- * @return Nro de revisoes encontradas nos snapshots
+/**
+Nro total de revisoes presentes nos snapshots
+@param qs Estrutura com os dados dos artigos
+@return Nro de revisoes encontradas nos snapshots
  */
 long all_revisions(TAD_istruct qs){
     articleInfoP i;
@@ -212,11 +212,11 @@ long all_revisions(TAD_istruct qs){
 
 
 
-/*
- * Devolve o nome do contribuidor identificado pelo id dado
- * @param id Id a procurar 
- * @param qs estrutura com os dados dos artigos
- * @return Apontador para o nome do contribuidor caso tenha sido encontrado, NULL caso contrario
+/**
+Devolve o nome do contribuidor identificado pelo id dado
+@param id Id a procurar 
+@param qs Estrutura com os dados dos artigos
+@return Apontador para o nome do contribuidor caso tenha sido encontrado, NULL caso contrario
  */
 char* contributor_name(long contributor_id, TAD_istruct qs){
 
@@ -236,11 +236,11 @@ char* contributor_name(long contributor_id, TAD_istruct qs){
 
 
 
-/*
- * Devolve o nome de um artigo, através do id dado
- * @param id Id a procurar 
- * @param qs estrutura com os dados dos artigos
- * @return Apontador para o nome do artigo caso tenha sido encontrado, NULL caso contrario
+/**
+Devolve o nome de um artigo, através do id dado
+@param id Id a procurar 
+@param qs Estrutura com os dados dos artigos
+@return Apontador para o nome do artigo caso tenha sido encontrado, NULL caso contrario
  */
 char* article_title(long article_id, TAD_istruct qs){
   articleInfoP i;
@@ -259,11 +259,11 @@ char* article_title(long article_id, TAD_istruct qs){
 }
 
 
-/* 
- * Devolve uma lista de endereços, ordenados por ordem alfabetica, cujo o título tem o prefixo dado.
- * @param prefix Prefixo a procurar
- * @param qs estrutura com os dados dos artigos
- * @return Array de apontadores (ordenado) para os titulos com o prefixo dado
+/** 
+Devolve uma lista de endereços, ordenados por ordem alfabetica, cujo o título tem o prefixo dado.
+@param prefix Prefixo a procurar
+@param qs Estrutura com os dados dos artigos
+@return Array de apontadores (ordenado) para os titulos com o prefixo dado
  */
 char** titles_with_prefix(char* prefix, TAD_istruct qs){
 
@@ -290,10 +290,10 @@ char** titles_with_prefix(char* prefix, TAD_istruct qs){
     return guarda;
 }
 
-/*
- * Ordena um array de strings por ordem alfabetica
- * @param arr Array de apontadores para arrays de caracteres
- * @param len tamanho do prefixo, i.e. ponto a partir do qual e efetuada a comparaçao
+/**
+Ordena um array de strings por ordem alfabetica
+@param arr Array de apontadores para arrays de caracteres
+@param len Tamanho do prefixo, i.e. ponto a partir do qual e efetuada a comparaçao
  */
 void quickSort(char **arr, int len){
 

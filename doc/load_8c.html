@@ -118,6 +118,14 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Adiciona um contribuidor à árvore binária de procura </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tree</td><td>Apontador para a árvore binária </td></tr>
+    <tr><td class="paramname">id</td><td>Id do contribuidor a adicionar </td></tr>
+    <tr><td class="paramname">nome</td><td>Nome do contribuidor a adicionar </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -176,6 +184,19 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Regista uma nova contrubuição e revisao </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dict</td><td>Dicionário com par id, timestamp da revisao </td></tr>
+    <tr><td class="paramname">tree</td><td>Árvore binária com os contribuidores ja encontrados </td></tr>
+    <tr><td class="paramname">nodo</td><td>Apontador para a tag do artigo(page) </td></tr>
+    <tr><td class="paramname">doc</td><td>Apontador para o ficheiro xml a ser procesado </td></tr>
+    <tr><td class="paramname">len</td><td>Apontador para o (maior) tamanho do artigo atual </td></tr>
+    <tr><td class="paramname">words</td><td>Apontador para o (maior) nro de palavras do artigo atual </td></tr>
+    <tr><td class="paramname">nRev</td><td>Nro de revisoes, ja conhecidas, do artigo atual </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>1 caso se trate de uma nova revisao, 0 caso contrario </dd></dl>
 
 </div>
 </div>
@@ -210,6 +231,14 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Conta o número de palavras total e o número de caracteres total do array de caracteres dado </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">s</td><td>string a percorrer </td></tr>
+    <tr><td class="paramname">car</td><td>apontador para o long que guarda o nro de caracteres </td></tr>
+    <tr><td class="paramname">pal</td><td>apontador para o long que guarda o nro de palavras </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -238,6 +267,14 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Funçao de hash dos id's de artigos </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>Valor a ser usado para o calculo do hash </td></tr>
+    <tr><td class="paramname">size</td><td>Tamanho da tabela de hash </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>output da funçao de hash </dd></dl>
 
 </div>
 </div>
@@ -272,6 +309,14 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Adiciona um artigo à hashTable </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">articCollect</td><td>Apontador para hashTable </td></tr>
+    <tr><td class="paramname">nodo</td><td>Apontador de nós do xml só de um artico </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 se não foi adicionado um novo artigo, 1 caso contrário </dd></dl>
 
 </div>
 </div>
@@ -306,6 +351,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Verifica se a chave(id) dada já se encontra no dicionário </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dict</td><td>Dicionário com par id, timestamp da revisao </td></tr>
+    <tr><td class="paramname">nRev</td><td>nro de entradas presentes no dicionário </td></tr>
+    <tr><td class="paramname">idT</td><td>chave a procurar no dicionário </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>1 se nao se encontrar, 0 caso contrario </dd></dl>
 
 </div>
 </div>
@@ -340,6 +394,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Percorre o ficheiro xml e processa as paginas encontradas (usando a tag page) </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">qs</td><td>estrutura que guarda a informação ja recolhida relativa aos snapshots </td></tr>
+    <tr><td class="paramname">cur</td><td>apontador para os nodos que se encontram aos niveis das paginas </td></tr>
+    <tr><td class="paramname">doc</td><td>Apontador para o ficheiro xml a ser procesado </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Devolve a estrutura que resulta de adicionar a informaçao presente no snapshot atual </dd></dl>
 
 </div>
 </div>
@@ -358,6 +421,12 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Redimensiona a hashTable </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">articCollect</td><td>Apontador para a hashTable </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

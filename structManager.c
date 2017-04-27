@@ -1,9 +1,9 @@
 #include "structManager.h"
 
-/*
- *função que inicia a estrutura
- * @return TAD_istruct devolve a estrutura iniciada
- */
+/**
+Função que inicializa a estrutura
+@return TAD_istruct Devolve a estrutura iniciada
+*/
 TAD_istruct init(){
 
     TAD_istruct res = (TAD_istruct)malloc(sizeof(struct TCD_istruct));
@@ -22,13 +22,13 @@ TAD_istruct init(){
     return res;
 }
 
-/*
- *funcão que passa os dados presentes no xml para a estrutura
- * @param qs estrutura a colocar os dados
- * @param nsnaps número de backups
- * @param snaps_paths[] array com os apontadores de cada backup
- * @return devolve a estrutura com dados colocados
- */
+/**
+Funcão que processa os dados presentes no xml
+@param qs Estrutura onde serão colocados os dados
+@param nsnaps Número de snapshots a processar
+@param snaps_paths[] Lista de apontadores para strings contendo o path de cada snapshot
+@return Estrutura com o resultado de processar os snapshots dados
+*/
 TAD_istruct load(TAD_istruct qs, int nsnaps, char *snaps_paths[]){
 
     xmlDocPtr doc;
@@ -53,10 +53,10 @@ TAD_istruct load(TAD_istruct qs, int nsnaps, char *snaps_paths[]){
     return qs;
 }
 
-/*
- *limpa a árvore binaria
- * @param contribTreeP apontador para a árvore binária
- */
+/**
+Liberta o espaço ocupado pela árvore binaria
+@param contribTreeP apontador para a árvore binária
+*/
 void cleanContribTree(contribTreeP a){
         xmlFree(a->nome);
         if(a->left) cleanContribTree(a->left);
@@ -64,11 +64,11 @@ void cleanContribTree(contribTreeP a){
         free(a);
 }
 
-/*
- *Limpa a estrutura TAD_istruct
- * @param qs estrutura a ser limpa
- * @return estrutura já limpa
- */
+/**
+Liberta o espaço ocupado pela estrutura TAD_istruct
+@param qs Estrutura a ser liberta 
+@return Apontador nulo
+*/
 TAD_istruct clean(TAD_istruct qs){
     long i=0,j=0;
           articleInfoP aux = NULL, next = NULL;
