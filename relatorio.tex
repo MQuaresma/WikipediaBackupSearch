@@ -23,7 +23,7 @@
 \part{Introdução}
 \justify
 Projeto realizado no âmbito da cadeira de LI3 que consiste no desenvolvimento, em C, de um programa que responda a um conjunto de \textit{queries} relativas a \textit{snapshots} do site Wikipédia. O produto final deverá ter em conta não só a correção das suas respostas às queries mas também o tempo que demora a obter as mesmas.
-As queries às quais era necessário dar resposta são as seguintes:
+As queries às quais é necessário dar resposta são as seguintes:
 \begin{enumerate}
     \item long all\_articles(TAD\_istruct qs);
     \item long unique\_articles(TAD\_istruct qs);
@@ -42,10 +42,10 @@ As queries às quais era necessário dar resposta são as seguintes:
 \section{Bibliotecas}
 
 \subsection{libxml2}
-Na realização do trabalho foi utilizada a biblioteca \emph{libxml2}, por forma a automatizar o parsing de ficheiros xml.
+Na realização do trabalho foi utilizada a biblioteca \emph{libxml2} por forma a automatizar o parsing de ficheiros xml.
 
 \section{Filosofia de desenvolvimento}
-O código foi desenvolvido tendo em mente que a maior parte do trabalho podia ser feito na função load permitindo assim a minimização do tempo de resposta às queries mas mantendo, ainda assim, o seu tempo de execução baixo. Para isto foi tido em conta a possibilidade de que nem todas as queries seriam efetuadas e, por isso, apenas foram calculados os valores que tivessem o mínimo de impacto adicional na performance , isto é, valores que podiam ser calculados pela simples travessia da árvore gerada pela biblioteca libmlx2. Sendo assim, queries de ordenação com base em valores que não os usados para esse efeito (id de contribuidor vs nro de contribuidor do mesmo) são calculadas quando chamadas enquanto que queries em que a resposta são valores que podem ser calculados pelo simples processamento dos ficheiros xml possuem os valores já calculados (nro de artigos totais/unicos) ou as estruturas optimizadas para a execução das mesmas (consulta de nome de contribuidor).
+O código foi desenvolvido tendo em mente que a maior parte do processamento podia ser feito na função load permitindo assim a minimização do tempo de resposta às queries mas mantendo, ainda assim, o seu tempo de execução baixo. Para isto foi tido em conta a possibilidade de que nem todas as queries seriam efetuadas e, por isso, apenas foram calculados os valores que tivessem o mínimo de impacto adicional na performance , isto é, valores que podiam ser calculados pela simples travessia da árvore gerada pela biblioteca libxml2. Sendo assim, queries de ordenação com base em valores que não os usados para esse efeito (id de contribuidor vs nro. de contribuidor do mesmo) são calculadas quando chamadas enquanto que queries em que a resposta são valores que podem ser calculados pelo simples processamento dos ficheiros xml possuem os valores já calculados (nro de artigos totais/únicos) ou as estruturas optimizadas para a execução das mesmas (consulta de nome de contribuidor).
 
 \subsection{Estruturas de Dados}
 Na escolha das estruturas de dados a utilizar optámos por estruturas que nos oferecessem um tempo de consulta/inserção/remoção mais detrimento da quantidade de memória utilizada. Exemplo disto, e como iremos referir, é a estrutura utilizada para armazenar informação relativa aos contribuidores que, a troco da quantidade de memória ocupada, permite, na maioria dos casos, manter os tempos de consulta/inserção/remoção na $O(\log{}n)$. Esta opção foi tomada na assunção de que, ainda que o hiato processador-memória seja um dos grandes \textit{bootlenecks} atuais, a quantidade de cache existente na maioria dos processadores atuais já permite o uso de estruturas como estas sem que haja uma perda de performance em relação a estruturas mais simples.
