@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['queries_2ec',['queries.c',['../queries_8c.html',1,'']]]
+  ['structmanager_2ec',['structManager.c',['../structManager_8c.html',1,'']]],
+  ['structmanager_2eh',['structManager.h',['../structManager_8h.html',1,'']]]
 ];
