@@ -7,11 +7,6 @@ OBJ = load.o queries.o program.o structManager.o
 program: $(OBJ)
 	$(CC) $(CFLAGS) -o program $(OBJ) $(LIBS)
 
-test: $(OBJ)
-	$(CC) $(CFLAGS) -o program $(OBJ) $(LIBS)
-	rm *.o
-	mv program ../Datasets
-
 program.o: $(DEPS)
 	$(CC) -c $(CFLAGS) program.c
 

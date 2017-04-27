@@ -99,14 +99,32 @@ contribTreeP *myRealloc(contribTreeP *oStack, int size, int nSize){
 
 }
 
+/*
+ *Função que devolve um array com os ids dos 20 artigos maiores (ordenados do maior para o menor)
+ * @param qs estrutura com os dados dos artigos
+ * @return array com os id's dos artigos ordenados do artigo maior para o menor
+ */
 long* top_20_largest_articles(TAD_istruct qs){
 	return devolveArrayOrd(20,0,qs);
 }
 
+/*
+ *Função que devolve um array com os ids dos N artigos com mais palavras (ordenados do maior para o menor)
+ * @param n tamanho do array a devolver, ou seja N artigos com mais palavras
+ * @param qs estrutura com os dados dos artigos
+ * @return array com os id's dos artigos ordenados por ordem decrescente do numero de palavras
+ */
 long* top_N_articles_with_more_words(int n, TAD_istruct qs){
 	return devolveArrayOrd(n,1,qs);
 }
 
+/*
+ *Devolve o timestamp de uma determinada revisao de um artigo
+ * @param article_id id do artigo no qual pertence a revisão
+ * @param revision_id id da revisão
+ * @param qs estrutura com os dados dos artigos
+ * @return string com o timestamp ou null caso nao exista a revisão ou o artigo pedido.
+ */
 char* article_timestamp(long article_id, long revision_id, TAD_istruct qs){
 	long hashV = hash(article_id,(qs->articCollect)->size);
 	struct articleInfo *aux = NULL; 
