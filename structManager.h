@@ -4,7 +4,7 @@
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 #include "interface.h"
-#define HASHSIZE 100013
+#define HASHSIZE 70017
 
 /**
 Dicionario que guarda uma revisao de determinado artigo

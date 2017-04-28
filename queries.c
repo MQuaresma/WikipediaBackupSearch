@@ -51,6 +51,7 @@ long* runTree(contribTreeP tree){
     idTop = (long*)calloc(10, sizeof(long));
     valTop = (int*)calloc(10, sizeof(int));
     contribTreeP *stack = (contribTreeP *)calloc(1000, sizeof(void*));
+    contribTreeP *aux = NULL;
              
     if(idTop && valTop && stack){
         while(sp >= 0L){
@@ -68,8 +69,11 @@ long* runTree(contribTreeP tree){
             }             
             if(tree->left || tree->right){
                 if(sp >= size){
-                    size *= 2;
-                    stack = myRealloc(stack, size/2, size);
+                    aux = realloc(stack, (int)(size*1.5));
+                    if(aux && aux != stack){ 
+                        stack = aux;
+                        size = (int)(size*1.5);
+                    }    
                 }
                 if(tree->left){
                     if(tree->right) stack[sp++] = tree->right;
@@ -86,18 +90,6 @@ long* runTree(contribTreeP tree){
 
 }
 
-
-contribTreeP *myRealloc(contribTreeP *oStack, int size, int nSize){
-
-    contribTreeP *nStack = (contribTreeP *)calloc(nSize, sizeof(void*));
-
-    for(int i = 0; i < size; i ++) nStack[i] = oStack[i];
-    
-    free(oStack);
-    
-    return nStack;
-
-}
 
 /**
  *Função que devolve um array com os ids dos 20 artigos maiores
