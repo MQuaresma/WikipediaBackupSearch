@@ -267,23 +267,28 @@ Devolve uma lista de endereços, ordenados por ordem alfabetica, cujo o título 
  */
 char** titles_with_prefix(char* prefix, TAD_istruct qs){
 
-    int n=10, len = strlen(prefix);
+    int n=10, len = strlen(prefix), full = 0;
     long k, j=0;
     articleInfoP i;
     char** guarda = (char**)calloc(n,sizeof (char*));
+    char **aux = NULL;
 
-    for (k=0; k<qs->articCollect->size;k++)
-        for(i = qs->articCollect->table[k]; i ; i=i->next)
-            if (xmlStrstr(i->title,(xmlChar*)prefix) == i->title){
-                if (j>=n) {
-                    n *= 2;
-                    guarda = (char**)realloc(guarda,n);
+    if(guarda){
+        for (k=0; k<qs->articCollect->size && !full;k++)
+            for(i = qs->articCollect->table[k]; !full && i ; i=i->next)
+                if (xmlStrstr(i->title,(xmlChar*)prefix) == i->title){
+                    if (j>=n) {
+                        n *= 2;
+                        aux = (char**)realloc(guarda,n);
+                        if(aux && aux != guarda) guarda = aux;
+                        else full = 1;
+                    }
+                    guarda[j++] = (char*)i->title;
                 }
-                guarda[j++] = (char*)i->title;
-            }
 
-    if (j>=n) guarda = (char**)realloc(guarda,n+1);
-    guarda[j] = NULL;
+        if (j>=n) guarda = (char**)realloc(guarda,n+1);
+        guarda[j-full] = NULL;
+    }
 
     quickSort(guarda, len);  
 
