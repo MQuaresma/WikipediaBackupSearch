@@ -1,6 +1,7 @@
 ## macOS
 .DS_Store
-
 ._*
+
+## Others
 **/*.swp
 *.class
