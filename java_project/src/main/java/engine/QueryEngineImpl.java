@@ -5,7 +5,12 @@ import li3.Interface;
 import java.util.ArrayList;
 
 public class QueryEngineImpl implements Interface {
-
+	
+	//Instance variavels
+	private long artUn;
+	private long artTot;
+	private HashMap<long,Article> artigos
+	//private TreeMap<long,Contribuitor> contribuitors;	
 
     public void init() {
 
