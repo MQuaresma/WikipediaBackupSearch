@@ -11,11 +11,14 @@ public class QueryEngineImpl implements Interface {
 	//Instance variavels
 	private static long artUn;
 	private static long artTot;
-	private static HashMap<Long,Article> artigos
+	private static HashMap<Long,Article> artigos;
 	private static TreeMap<Long,Contribuitor> contribuitors;	
 
     public void init() {
-
+        QueryEngineImpl.artUn = 0;
+        QueryEngineImpl.artTot = 0;
+        QueryEngineImpl.artigos = new HashMap<Long,Article>();
+        QueryEngineImpl.contribuitors = new TreeMap<Long,Contribuitor>();
     }
 
     public void load(int nsnaps, ArrayList<String> snaps_paths) {
@@ -54,22 +57,29 @@ public class QueryEngineImpl implements Interface {
 
     private boolean processPage(XMLStreamReader parser){
         int event;
-        
+        String title;
+        long id;
+
         for(event = parser; !event.isStartElement() || !parser.getLocalName().equals("revision"); event=parser.next()){ //enquanto nao é a tag revision
-            String title;
-
             if(event.isStartElement()){
-                if(parser.getLocalName().equals("title")){ //será que devo garantir que é um event CHARACTERS?
-                    title = 
-                }else if(parser.getLocalName.equals("id")){
-
-                }
+                if(parser.getLocalName().equals("title")) title = parser.getElementText(); 
+                else if(parser.getLocalName.equals("id")) id = Long.parseLong(parser.getElementText());
             }
         }
-        processRevision(parser);
+
+        if(QueryEngineImpl.artigos.containsKey(id)){
+            Article aux = QueryEngineImpl.artigos.getValue(id);
+            aux.setTitle(title);
+        }else{
+            Article newArt = new Article();
+            newArt.setId(id);
+            newArt.setTitle(title);
+            QueryEngineImpl.artigos.put(id,newArt);
+        }
+        processRevision(parser, id);
     }
 
-    private boolean processRevision(XMLStreamReader parser){
+    private boolean processRevision(XMLStreamReader parser, long id){
 
     }
 
