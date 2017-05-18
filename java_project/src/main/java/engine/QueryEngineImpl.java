@@ -3,13 +3,15 @@ package engine;
 import li3.Interface;
 
 import java.util.ArrayList;
+import javax.xml.stream.XMLStreamReader;
+import java.io.FileInputStream;
 
 public class QueryEngineImpl implements Interface {
 	
 	//Instance variavels
-	private long artUn;
-	private long artTot;
-	private HashMap<long,Article> artigos
+	private static long artUn;
+	private static long artTot;
+	private static HashMap<long,Article> artigos
 	//private TreeMap<long,Contribuitor> contribuitors;	
 
     public void init() {
@@ -17,8 +19,40 @@ public class QueryEngineImpl implements Interface {
     }
 
     public void load(int nsnaps, ArrayList<String> snaps_paths) {
+        FileInputStream inp;
+        Iterator<String> run = snaps_paths.iterator();
+
+        while(run.hasNext()){
+            try{ 
+                inp = new FileInputStream(run.next());
+                processDoc(inp);
+                inp.close();          
+            }catch(FileNotFoundException e){
+                System.out.println(e.getMessage());
+            }    
+        }
+    }
+
+
+    public void processDoc(FileInputStream docStream){
+        XMLInputFactory factory = XMLInputFactory.newInstance();  
+        XMLStreamReader parser = factory.createXMLStreamReader(docStream);
+        boolean endPage=false;
+
+        for(int event = parser.next(); event != XMLStreamConstants.END_DOCUMENT; event = parser.next()){
+            if(event == XMLStreamConstants.START_ELEMENT && parser.getLocalName().equals("page")) //processar pagina quando encontrar inicio de tag com nome page
+                processPage(parser);
+            while(!parser.isEndElement() || parser.getLocalName().equals("page")) parser.nextTag(); //continua ate ao fim da pagina
+        }
+        parser.close();
+    }
+
+    public void processPage(XMLStreamReader parser){
+
+
 
     }
+
 
     public long all_articles() {
 
