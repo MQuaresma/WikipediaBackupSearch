@@ -41,7 +41,7 @@ public class QueryEngineImpl implements Interface {
      * Percorre documento XML e processos elementos com a tag page
      * @param docStream stream de input do dataset
      */
-    private void processDoc(FileInputStream docStream){
+    private void processDoc(FileInputStream docStream) throws IllegalStateException, XMLStreamException, FactoryConfigurationError{
         XMLInputFactory factory = XMLInputFactory.newInstance();  
         XMLStreamReader parser = factory.createXMLStreamReader(docStream);
 
@@ -55,7 +55,7 @@ public class QueryEngineImpl implements Interface {
         parser.close();
     }
 
-    private boolean processPage(XMLStreamReader parser){
+    private boolean processPage(XMLStreamReader parser) throws XMLStreamException, IllegalStateException{
         int event;
         String title;
         long id;
@@ -68,7 +68,7 @@ public class QueryEngineImpl implements Interface {
         }
 
         if(QueryEngineImpl.artigos.containsKey(id)){
-            Article aux = QueryEngineImpl.artigos.getValue(id);
+            Article aux = QueryEngineImpl.artigos.get(id);
             aux.setTitle(title);
         }else{
             Article newArt = new Article();

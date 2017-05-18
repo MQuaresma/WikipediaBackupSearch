@@ -1,3 +1,5 @@
+package engine;
+
 public class Contribuitor {
 
 		//Instance variavels
