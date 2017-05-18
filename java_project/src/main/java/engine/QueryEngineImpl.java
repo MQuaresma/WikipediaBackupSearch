@@ -34,21 +34,25 @@ public class QueryEngineImpl implements Interface {
     }
 
 
+    /**
+     * Percorre documento XML e processos elementos com a tag page
+     * @param docStream stream de input do dataset
+     */
     public void processDoc(FileInputStream docStream){
         XMLInputFactory factory = XMLInputFactory.newInstance();  
         XMLStreamReader parser = factory.createXMLStreamReader(docStream);
-        boolean endPage=false;
 
-        for(int event = parser.next(); event != XMLStreamConstants.END_DOCUMENT; event = parser.next()){
-            if(event == XMLStreamConstants.START_ELEMENT && parser.getLocalName().equals("page")) //processar pagina quando encontrar inicio de tag com nome page
+        for(int event = parser.next(); event != XMLStreamConstants.END_DOCUMENT; event = parser.next())
+            if(parser.isStartElement() && parser.getLocalName().equals("page")){
+                parser.next(); 
                 processPage(parser);
-            while(!parser.isEndElement() || parser.getLocalName().equals("page")) parser.nextTag(); //continua ate ao fim da pagina
-        }
+            }
+
         parser.close();
     }
 
     public void processPage(XMLStreamReader parser){
-
+        
 
 
     }
