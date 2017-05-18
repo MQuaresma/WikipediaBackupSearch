@@ -11,8 +11,8 @@ public class QueryEngineImpl implements Interface {
 	//Instance variavels
 	private static long artUn;
 	private static long artTot;
-	private static HashMap<long,Article> artigos
-	//private TreeMap<long,Contribuitor> contribuitors;	
+	private static HashMap<Long,Article> artigos
+	private static TreeMap<Long,Contribuitor> contribuitors;	
 
     public void init() {
 
@@ -38,25 +38,40 @@ public class QueryEngineImpl implements Interface {
      * Percorre documento XML e processos elementos com a tag page
      * @param docStream stream de input do dataset
      */
-    public void processDoc(FileInputStream docStream){
+    private void processDoc(FileInputStream docStream){
         XMLInputFactory factory = XMLInputFactory.newInstance();  
         XMLStreamReader parser = factory.createXMLStreamReader(docStream);
 
         for(int event = parser.next(); event != XMLStreamConstants.END_DOCUMENT; event = parser.next())
             if(parser.isStartElement() && parser.getLocalName().equals("page")){
                 parser.next(); 
-                processPage(parser);
+                if(processPage(parser)) QueryEngineImpl.artUn ++;
+                QueryEngineImpl.artTot ++;
             }
 
         parser.close();
     }
 
-    public void processPage(XMLStreamReader parser){
+    private boolean processPage(XMLStreamReader parser){
+        int event;
         
+        for(event = parser; !event.isStartElement() || !parser.getLocalName().equals("revision"); event=parser.next()){ //enquanto nao é a tag revision
+            String title;
 
+            if(event.isStartElement()){
+                if(parser.getLocalName().equals("title")){ //será que devo garantir que é um event CHARACTERS?
+                    title = 
+                }else if(parser.getLocalName.equals("id")){
 
+                }
+            }
+        }
+        processRevision(parser);
     }
 
+    private boolean processRevision(XMLStreamReader parser){
+
+    }
 
     public long all_articles() {
 
