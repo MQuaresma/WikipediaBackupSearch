@@ -2,8 +2,9 @@ package engine;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Comparator;
 
-public class Article {
+public class Article{
 
 	//Instance variavels
 	private long id;
