@@ -143,9 +143,10 @@ public class QueryEngineImpl implements Interface{
     }
 
     public long all_revisions() {
-        return QueryEngineImpl.articles.values().stream()
-                                     .mapToLong(Article::getNRev)
-                                     .sum();
+        return QueryEngineImpl.articles.values()
+                                       .stream()
+                                       .mapToLong(Article::getNRev)
+                                       .sum();
     }
 
     public ArrayList<Long> top_10_contributors() {
@@ -179,10 +180,10 @@ public class QueryEngineImpl implements Interface{
 
     public ArrayList<Long> top_N_articles_with_more_words(int n) {
         return QueryEngineImpl.articles.values().stream()
-                                     .sorted(new ArtCompareWords())
-                                     .limit(n)
-                                     .map(Article::getId)
-                                     .collect(Collectors.toCollection(ArrayList::new));
+                                                .sorted(new ArtCompareWords())
+                                                .limit(n)
+                                                .map(Article::getId)
+                                                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     public ArrayList<String> titles_with_prefix(String prefix) {
@@ -191,6 +192,7 @@ public class QueryEngineImpl implements Interface{
                                        .stream()
                                        .map(a -> a.getTitle())
                                        .filter(a -> a.startsWith(prefix))
+                                       .sorted()
                                        .collect(Collectors.toCollection(ArrayList::new));
 
     }
