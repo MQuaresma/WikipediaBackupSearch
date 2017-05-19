@@ -4,7 +4,16 @@ import li3.Interface;
 
 import java.util.ArrayList;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamConstants;
+import java.util.Iterator;
 import java.io.FileInputStream;
+import java.util.HashMap;
+import java.util.TreeMap;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.FactoryConfigurationError;
+import java.io.FileNotFoundException;
+
 
 public class QueryEngineImpl implements Interface {
 	
@@ -12,13 +21,13 @@ public class QueryEngineImpl implements Interface {
 	private static long artUn;
 	private static long artTot;
 	private static HashMap<Long,Article> artigos;
-	private static TreeMap<Long,Contribuitor> contribuitors;	
+	private static TreeMap<Long,Contributor> contributors;	
 
     public void init() {
         QueryEngineImpl.artUn = 0;
         QueryEngineImpl.artTot = 0;
         QueryEngineImpl.artigos = new HashMap<Long,Article>();
-        QueryEngineImpl.contribuitors = new TreeMap<Long,Contribuitor>();
+        QueryEngineImpl.contributors = new TreeMap<Long,Contributor>();
     }
 
     public void load(int nsnaps, ArrayList<String> snaps_paths) {
@@ -56,18 +65,20 @@ public class QueryEngineImpl implements Interface {
     }
 
     private boolean processPage(XMLStreamReader parser) throws XMLStreamException, IllegalStateException{
-        int event;
         String title;
+        boolean newPage=true;
         long id;
 
-        for(event = parser; !event.isStartElement() || !parser.getLocalName().equals("revision"); event=parser.next()){ //enquanto nao é a tag revision
-            if(event.isStartElement()){
+        for(parser.next(); !parser.isStartElement() || !parser.getLocalName().equals("revision");){ //enquanto nao é a tag revision
+            if(parser.isStartElement()){
                 if(parser.getLocalName().equals("title")) title = parser.getElementText(); 
-                else if(parser.getLocalName.equals("id")) id = Long.parseLong(parser.getElementText());
+                else if(parser.getLocalName().equals("id")) id = Long.parseLong(parser.getElementText());
             }
         }
 
-        if(QueryEngineImpl.artigos.containsKey(id)){
+        newPage = !QueryEngineImpl.artigos.containsKey(id);
+
+        if(!newPage){
             Article aux = QueryEngineImpl.artigos.get(id);
             aux.setTitle(title);
         }else{
@@ -76,11 +87,50 @@ public class QueryEngineImpl implements Interface {
             newArt.setTitle(title);
             QueryEngineImpl.artigos.put(id,newArt);
         }
+        parser.next();
         processRevision(parser, id);
+        return newPage;
     }
 
-    private boolean processRevision(XMLStreamReader parser, long id){
+    private void processRevision(XMLStreamReader parser, long id) throws XMLStreamException, IllegalStateException{
+        Article auxA;
+        Contributor auxC;
+        String contribName, timestamp;
+        long idR, idC;
+        boolean newRev=true;
 
+        for(;newRev && (!parser.isStartElement() || !parser.getLocalName().equals("text")); parser.next()){
+            if(parser.isStartElement()){
+                    if(parser.getLocalName().equals("id")){ 
+                        idR = Long.parseLong(parser.getElementText());
+                        auxA = QueryEngineImpl.artigos.get(id);
+                        newRev = !auxA.getRevisions().containsKey(idR); //verifica se a revisao ja foi adicionada
+                    }
+                    else if(parser.getLocalName().equals("timestamp")) timestamp  = parser.getElementText();
+                    else if(parser.getLocalName().equals("username")){
+                        contribName = parser.getElementText();
+                        while(!parser.isStartElement() || !parser.getLocalName().equals("id")) parser.next();
+                        idC = Long.parseLong(parser.getElementText());
+                        if(QueryEngineImpl.contributors.containsKey(idC)) QueryEngineImpl.contributors.get(idC).addNewRev();
+                        else{
+                            auxC = new Contributor();    
+                            auxC.setId(idC);
+                            auxC.setName(contribName);
+                            auxC.addNewRev();
+                            QueryEngineImpl.contributors.put(idC, auxC);
+                        }
+                    } 
+            }
+        }
+
+        //revisao encontrada e nova
+        if(newRev){
+            auxA.getRevisions().put(idR, timestamp);  
+            if(parser.getLocalName().equals("text"))
+                    auxA.setNewLenghtWords(parser.getElementText()); 
+            auxA.incNRev();
+        }
+        
     }
 
     public long all_articles() {

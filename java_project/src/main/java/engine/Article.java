@@ -99,6 +99,19 @@ public class Article {
         this.words = words;
     }
 
+    public void setNewLenghtWords(String text){
+        long tLen=text.length(), tWords;
+        String[] aux = text.split(" ");
+        tWords = aux.length; 
+
+        if(tLen > this.len) this.len = tLen;
+        if(tWords > this.words) this.words = tWords;
+    }
+
+    public void incNRev(){
+        this.nRev ++;
+    }
+    
     public boolean equals(Object o){
         if(this == o) return true;
         if((o==null) || (o.getClass()!=this.getClass())) return false;

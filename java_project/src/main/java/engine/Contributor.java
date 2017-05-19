@@ -1,6 +1,6 @@
 package engine;
 
-public class Contribuitor {
+public class Contributor {
 
 		//Instance variavels
 		private long id;
@@ -8,19 +8,19 @@ public class Contribuitor {
 		private int nRev;
         
         //constructors
-        public Contribuitor(){
+        public Contributor(){
             this.id = 0;
             this.name = null;
             this.nRev = 0;
         }
 
-        public Contribuitor(long id, String name, int nRev){
+        public Contributor(long id, String name, int nRev){
             this.id = id;
             this.name = name;
             this.nRev = nRev;
         }
 
-        public Contribuitor(Contribuitor c){
+        public Contributor(Contributor c){
             this.id = c.getId();
             this.name = c.getName();
             this.nRev = c.getNRev();
@@ -51,15 +51,19 @@ public class Contribuitor {
             this.nRev = nRev;
         }
 
+        public void addNewRev(){
+            this.nRev ++;
+        }
+
         public boolean equals(Object o){
             if(this == o) return true;
             if((o == null) || (o.getClass()!=this.getClass())) return false;
-            Contribuitor c = (Contribuitor)o;
+            Contributor c = (Contributor)o;
             return (this.id==c.getId() && this.name.equals(c.getName()) && this.nRev==c.getNRev());
         }
 
-        public Contribuitor clone(){
-            return new Contribuitor(this);
+        public Contributor clone(){
+            return new Contributor(this);
         }
 
         public String toString(){
@@ -79,7 +83,7 @@ public class Contribuitor {
             return r;
         }
 
-        public int compareTo(Contribuitor c){
+        public int compareTo(Contributor c){
             long aux = c.getId();
             int res;
             if(this.id == aux) res = 0;
