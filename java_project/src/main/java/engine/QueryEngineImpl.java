@@ -143,7 +143,9 @@ public class QueryEngineImpl implements Interface{
     }
 
     public long all_revisions() {
-        return this.artigos.values().stream().mapToLong(Article::getNRev).sum();
+        return QueryEngineImpl.articles.values().stream()
+                                     .mapToLong(Article::getNRev)
+                                     .sum();
     }
 
     public ArrayList<Long> top_10_contributors() {
@@ -162,7 +164,12 @@ public class QueryEngineImpl implements Interface{
     }
 
     public ArrayList<Long> top_20_largest_articles() {
-        return this.artigos.values().stream().sorted(new ArtCompareText()).limit(20).map(Article::getId).collect(Collectors.toCollection(ArrayList::new));
+        return QueryEngineImpl.articles.values()
+                                       .stream()
+                                       .sorted(new ArtCompareText())
+                                       .limit(20)
+                                       .map(Article::getId)
+                                       .collect(Collectors.toCollection(ArrayList::new));
     }
 
     public String article_title(long article_id) {
@@ -171,7 +178,11 @@ public class QueryEngineImpl implements Interface{
     }
 
     public ArrayList<Long> top_N_articles_with_more_words(int n) {
-        return this.artigos.values().stream().sorted(new ArtCompareWords()).limit(n).map(Article::getId).collect(Collectors.toCollection(ArrayList::new));
+        return QueryEngineImpl.articles.values().stream()
+                                     .sorted(new ArtCompareWords())
+                                     .limit(n)
+                                     .map(Article::getId)
+                                     .collect(Collectors.toCollection(ArrayList::new));
     }
 
     public ArrayList<String> titles_with_prefix(String prefix) {
