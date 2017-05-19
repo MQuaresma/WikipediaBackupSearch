@@ -13,20 +13,21 @@ import java.util.TreeMap;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.FactoryConfigurationError;
 import java.io.FileNotFoundException;
-
+import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 public class QueryEngineImpl implements Interface {
 	
 	//Instance variavels
 	private static long artUn;
 	private static long artTot;
-	private static HashMap<Long,Article> artigos;
+	private static HashMap<Long,Article> articles;
 	private static TreeMap<Long,Contributor> contributors;	
 
     public void init() {
         QueryEngineImpl.artUn = 0;
         QueryEngineImpl.artTot = 0;
-        QueryEngineImpl.artigos = new HashMap<Long,Article>();
+        QueryEngineImpl.articles = new HashMap<Long,Article>();
         QueryEngineImpl.contributors = new TreeMap<Long,Contributor>();
     }
 
@@ -76,16 +77,16 @@ public class QueryEngineImpl implements Interface {
             }
         }
 
-        newPage = !QueryEngineImpl.artigos.containsKey(id);
+        newPage = !QueryEngineImpl.articles.containsKey(id);
 
         if(!newPage){
-            Article aux = QueryEngineImpl.artigos.get(id);
+            Article aux = QueryEngineImpl.articles.get(id);
             aux.setTitle(title);
         }else{
             Article newArt = new Article();
             newArt.setId(id);
             newArt.setTitle(title);
-            QueryEngineImpl.artigos.put(id,newArt);
+            QueryEngineImpl.articles.put(id,newArt);
         }
         parser.next();
         processRevision(parser, id);
@@ -103,7 +104,7 @@ public class QueryEngineImpl implements Interface {
             if(parser.isStartElement()){
                     if(parser.getLocalName().equals("id")){ 
                         idR = Long.parseLong(parser.getElementText());
-                        auxA = QueryEngineImpl.artigos.get(id);
+                        auxA = QueryEngineImpl.articles.get(id);
                         newRev = !auxA.getRevisions().containsKey(idR); //verifica se a revisao ja foi adicionada
                     }
                     else if(parser.getLocalName().equals("timestamp")) timestamp  = parser.getElementText();
@@ -147,8 +148,13 @@ public class QueryEngineImpl implements Interface {
     }
 
     public ArrayList<Long> top_10_contributors() {
-
-        return new ArrayList<Long>();
+        
+        return QueryEngineImpl.contributors.values()
+                                           .stream()
+                                           .sorted(new ComparatorContributorRevs())
+                                           .limit(10)
+                                           .map(a -> a.getId())
+                                           .collect(Collectors.toCollection(ArrayList::new));
     }
 
     public String contributor_name(long contributor_id) {
@@ -173,7 +179,12 @@ public class QueryEngineImpl implements Interface {
 
     public ArrayList<String> titles_with_prefix(String prefix) {
 
-        return new ArrayList<String>();
+        return QueryEngineImpl.articles.values()
+                                       .stream()
+                                       .map(a -> a.getTitle())
+                                       .filter(a -> a.startsWith(prefix))
+                                       .collect(Collectors.toCollection(ArrayList::new));
+
     }
 
     public String article_timestamp(long article_id, long revision_id) {
@@ -181,7 +192,6 @@ public class QueryEngineImpl implements Interface {
         return " ";
     }
 
-    public void clean() {
+    public void clean(){}
 
-    }
 }
