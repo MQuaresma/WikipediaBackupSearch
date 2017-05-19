@@ -134,13 +134,11 @@ public class QueryEngineImpl implements Interface {
     }
 
     public long all_articles() {
-
-        return 0;
+        return QueryEngineImpl.artTot;
     }
 
     public long unique_articles() {
-
-        return 0;
+        return QueryEngineImpl.artUn;
     }
 
     public long all_revisions() {
