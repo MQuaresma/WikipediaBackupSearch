@@ -144,8 +144,7 @@ public class QueryEngineImpl implements Interface{
     }
 
     public long all_revisions() {
-
-        return 0;
+        return this.artigos.values().stream().mapToLong(Article::getNRev).sum();
     }
 
     public ArrayList<Long> top_10_contributors() {
