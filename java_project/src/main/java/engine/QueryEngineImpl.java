@@ -16,7 +16,7 @@ import java.io.FileNotFoundException;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
 
-public class QueryEngineImpl implements Interface {
+public class QueryEngineImpl implements Interface{
 	
 	//Instance variavels
 	private static long artUn;
@@ -143,8 +143,7 @@ public class QueryEngineImpl implements Interface {
     }
 
     public long all_revisions() {
-
-        return 0;
+        return this.artigos.values().stream().mapToLong(Article::getNRev).sum();
     }
 
     public ArrayList<Long> top_10_contributors() {
@@ -163,8 +162,7 @@ public class QueryEngineImpl implements Interface {
     }
 
     public ArrayList<Long> top_20_largest_articles() {
-
-        return new ArrayList<Long>();
+        return this.artigos.values().stream().sorted(new ArtCompareText()).limit(20).map(Article::getId).collect(Collectors.toCollection(ArrayList::new));
     }
 
     public String article_title(long article_id) {
@@ -173,8 +171,7 @@ public class QueryEngineImpl implements Interface {
     }
 
     public ArrayList<Long> top_N_articles_with_more_words(int n) {
-
-        return new ArrayList<Long>();
+        return this.artigos.values().stream().sorted(new ArtCompareWords()).limit(n).map(Article::getId).collect(Collectors.toCollection(ArrayList::new));
     }
 
     public ArrayList<String> titles_with_prefix(String prefix) {
@@ -192,6 +189,7 @@ public class QueryEngineImpl implements Interface {
         return " ";
     }
 
-    public void clean(){}
-
+    public void clean() {
+       ; 
+    }
 }
