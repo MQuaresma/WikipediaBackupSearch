@@ -213,7 +213,7 @@ public class QueryEngineImpl implements Interface{
     public String article_timestamp(long article_id, long revision_id) {
         
         if(QueryEngineImpl.articles.containsKey(article_id) && QueryEngineImpl.articles.get(article_id).getRevisions().containsKey(revision_id))
-            return QueryEngineImpl.articles.get(revision_id).getTimeStamp();
+            return QueryEngineImpl.articles.get(article_id).getRevisions().get(revision_id);
         else return null;
     }
 
