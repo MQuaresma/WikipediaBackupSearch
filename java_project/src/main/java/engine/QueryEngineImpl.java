@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 import java.util.HashMap;
 import java.util.TreeMap;
 import javax.xml.stream.XMLStreamException;
+import java.io.IOException;
 import javax.xml.stream.FactoryConfigurationError;
 import java.io.FileNotFoundException;
 import java.util.stream.Stream;
@@ -40,7 +41,7 @@ public class QueryEngineImpl implements Interface{
                 inp = new FileInputStream(run.next());
                 processDoc(inp);
                 inp.close();          
-            }catch(FileNotFoundException e){
+            }catch(IOException | XMLStreamException e){
                 System.out.println(e.getMessage());
             }    
         }
@@ -66,18 +67,19 @@ public class QueryEngineImpl implements Interface{
     }
 
     private boolean processPage(XMLStreamReader parser) throws XMLStreamException, IllegalStateException{
-        String title;
+        String title="";
         boolean newPage=true;
-        long id;
+        long id=0;
 
         for(parser.next(); !parser.isStartElement() || !parser.getLocalName().equals("revision");){ //enquanto nao é a tag revision
             if(parser.isStartElement()){
                 if(parser.getLocalName().equals("title")) title = parser.getElementText(); 
-                else if(parser.getLocalName().equals("id")) id = Long.parseLong(parser.getElementText());
-            }
+                else if(parser.getLocalName().equals("id")){
+                        id = Long.parseLong(parser.getElementText());
+                        newPage = !QueryEngineImpl.articles.containsKey(id);
+                     }
+            }    
         }
-
-        newPage = !QueryEngineImpl.articles.containsKey(id);
 
         if(!newPage){
             Article aux = QueryEngineImpl.articles.get(id);
@@ -94,10 +96,10 @@ public class QueryEngineImpl implements Interface{
     }
 
     private void processRevision(XMLStreamReader parser, long id) throws XMLStreamException, IllegalStateException{
-        Article auxA;
-        Contributor auxC;
-        String contribName, timestamp;
-        long idR, idC;
+        Article auxA=null;
+        Contributor auxC=null;
+        String contribName="", timestamp="";
+        long idR=0, idC=0;
         boolean newRev=true;
 
         for(;newRev && (!parser.isStartElement() || !parser.getLocalName().equals("text")); parser.next()){
