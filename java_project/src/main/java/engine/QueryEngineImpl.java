@@ -158,10 +158,14 @@ public class QueryEngineImpl implements Interface{
                                            .map(a -> a.getId())
                                            .collect(Collectors.toCollection(ArrayList::new));
     }
-
+    
+    //devolve o nome do autor com um determinado identificador. Caso não exista
+    //o autor a interrogação retorna o valor NULL.
     public String contributor_name(long contributor_id) {
-
-        return " ";
+        
+        if(QueryEngineImpl.contributors.containsKey(contributor_id))
+            return QueryEngineImpl.contributors.get(contributor_id).getName();
+        else return null;
     }
 
     public ArrayList<Long> top_20_largest_articles() {
@@ -172,10 +176,15 @@ public class QueryEngineImpl implements Interface{
                                        .map(Article::getId)
                                        .collect(Collectors.toCollection(ArrayList::new));
     }
-
+    
+    //devolve o título do artigo com um determinado identificador. Caso não exista
+    //o artigo a interrogação retorna o valor NULL. No caso de um determinado artigo ter várias
+    //versões (revisões) deve ser considerado o título da revisão mais recente.
     public String article_title(long article_id) {
-
-        return " ";
+        
+        if(QueryEngineImpl.articles.containsKey(article_id))
+            return QueryEngineImpl.articles.get(article_id).getTitle();
+        else return null;
     }
 
     public ArrayList<Long> top_N_articles_with_more_words(int n) {
@@ -197,9 +206,13 @@ public class QueryEngineImpl implements Interface{
 
     }
 
+    //devolve o timestamp para uma certa revisão de um artigo. Caso não exista
+    //a revisão daquele artigo a interrogação retorna o valor NULL.
     public String article_timestamp(long article_id, long revision_id) {
-
-        return " ";
+        
+        if(QueryEngineImpl.articles.containsKey(article_id) && QueryEngineImpl.articles.get(article_id).getRevisions().containsKey(revision_id))
+            return QueryEngineImpl.articles.get(revision_id).getTimeStamp();
+        else return null;
     }
 
     public void clean() {
