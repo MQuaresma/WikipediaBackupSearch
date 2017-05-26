@@ -58,7 +58,6 @@ public class QueryEngineImpl implements Interface{
 
         for(int event = parser.next(); event != XMLStreamConstants.END_DOCUMENT; event = parser.next())
             if(parser.isStartElement() && parser.getLocalName().equals("page")){
-                parser.next(); 
                 if(processPage(parser)) QueryEngineImpl.artUn ++;
                 QueryEngineImpl.artTot ++;
             }
@@ -71,7 +70,7 @@ public class QueryEngineImpl implements Interface{
         boolean newPage=true;
         long id=0;
 
-        for(parser.next(); !parser.isStartElement() || !parser.getLocalName().equals("revision");){ //enquanto nao é a tag revision
+        for(parser.next(); !parser.isStartElement() || !parser.getLocalName().equals("revision"); parser.next()){ //enquanto nao é a tag revision
             if(parser.isStartElement()){
                 if(parser.getLocalName().equals("title")) title = parser.getElementText(); 
                 else if(parser.getLocalName().equals("id")){
@@ -107,7 +106,7 @@ public class QueryEngineImpl implements Interface{
                     if(parser.getLocalName().equals("id")){ 
                         idR = Long.parseLong(parser.getElementText());
                         auxA = QueryEngineImpl.articles.get(id);
-                        newRev = !auxA.getRevisions().containsKey(idR); //verifica se a revisao ja foi adicionada
+                        newRev = !auxA.getRevisionsP().containsKey(idR); //verifica se a revisao ja foi adicionada
                     }
                     else if(parser.getLocalName().equals("timestamp")) timestamp  = parser.getElementText();
                     else if(parser.getLocalName().equals("username")){
@@ -128,7 +127,7 @@ public class QueryEngineImpl implements Interface{
 
         //revisao encontrada e nova
         if(newRev){
-            auxA.getRevisions().put(idR, timestamp);  
+            auxA.getRevisionsP().put(idR, timestamp);  
             if(parser.getLocalName().equals("text"))
                     auxA.setNewLenghtWords(parser.getElementText()); 
             auxA.incNRev();

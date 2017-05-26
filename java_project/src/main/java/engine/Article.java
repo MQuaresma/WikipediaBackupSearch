@@ -62,6 +62,10 @@ public class Article{
         return r;
     }
 
+    public Map<Long,String> getRevisionsP(){
+        return this.revisions;
+    }
+
     public long getNRev(){
         return this.nRev;
     }
