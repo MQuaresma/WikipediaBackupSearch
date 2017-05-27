@@ -107,15 +107,16 @@ public class Article{
     }
 
     public void setNewLenghtWords(String text){
-        long size = text.length(), tWords=0L;
-        
-        for(int i = 0; i < size;){
-            while(i < size && (text.charAt(i) == ' ' || text.charAt(i) == '\t'  || text.charAt(i) == '\n')) i ++;
-            if(i < size) tWords++; 
-            while(i < size && text.charAt(i) != ' ' && text.charAt(i) != '\t'  && text.charAt(i) != '\n') i ++;
+        long tWords=0L, i=0L;
+        char prev=' ';
+
+        for(char c: text.toCharArray()){
+            if((prev == ' ' || prev == '\t'  || prev == '\n') && c!=' ' && c!='\t' && c!= '\n') tWords++; 
+            i++;
+            prev=c;
         }
 
-        if(size > this.len) this.len = size;
+        if(i > this.len) this.len = i;
         if(tWords > this.words) this.words = tWords;
     }
 

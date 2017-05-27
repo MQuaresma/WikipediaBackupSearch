@@ -54,6 +54,7 @@ public class QueryEngineImpl implements Interface{
      */
     private void processDoc(FileInputStream docStream) throws IllegalStateException, XMLStreamException, FactoryConfigurationError{
         XMLInputFactory factory = XMLInputFactory.newInstance();  
+        factory.setProperty(XMLInputFactory.IS_COALESCING, true);
         XMLStreamReader parser = factory.createXMLStreamReader(docStream);
 
         for(int event = parser.next(); event != XMLStreamConstants.END_DOCUMENT; event = parser.next())
