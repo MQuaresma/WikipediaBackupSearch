@@ -89,7 +89,6 @@ public class QueryEngineImpl implements Interface{
             newArt.setTitle(title);
             QueryEngineImpl.articles.put(id,newArt);
         }
-        parser.next();
         processRevision(parser, id);
         return newPage;
     }
@@ -101,14 +100,13 @@ public class QueryEngineImpl implements Interface{
         long idR=0, idC=0;
         boolean newRev=true;
 
-        for(;newRev && (!parser.isStartElement() || !parser.getLocalName().equals("text")); parser.next()){
+        for(parser.next();newRev && (!parser.isStartElement() || !parser.getLocalName().equals("text")); parser.next()){
             if(parser.isStartElement()){
                     if(parser.getLocalName().equals("id")){ 
                         idR = Long.parseLong(parser.getElementText());
                         auxA = QueryEngineImpl.articles.get(id);
                         newRev = !auxA.getRevisionsP().containsKey(idR); //verifica se a revisao ja foi adicionada
-                    }
-                    else if(parser.getLocalName().equals("timestamp")) timestamp  = parser.getElementText();
+                    }else if(parser.getLocalName().equals("timestamp")) timestamp  = parser.getElementText();
                     else if(parser.getLocalName().equals("username")){
                         contribName = parser.getElementText();
                         while(!parser.isStartElement() || !parser.getLocalName().equals("id")) parser.next();
@@ -125,7 +123,7 @@ public class QueryEngineImpl implements Interface{
             }
         }
 
-        //revisao encontrada e nova
+        //nova revisao encontrada
         if(newRev){
             auxA.getRevisionsP().put(idR, timestamp);  
             if(parser.getLocalName().equals("text"))

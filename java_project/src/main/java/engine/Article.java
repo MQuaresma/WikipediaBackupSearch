@@ -3,6 +3,8 @@ package engine;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Comparator;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 public class Article{
 
@@ -105,11 +107,15 @@ public class Article{
     }
 
     public void setNewLenghtWords(String text){
-        long tLen=text.length(), tWords;
-        String[] aux = text.split(" ");
-        tWords = aux.length; 
+        long size = text.length(), tWords=0L;
+        
+        for(int i = 0; i < size;){
+            while(i < size && (text.charAt(i) == ' ' || text.charAt(i) == '\t'  || text.charAt(i) == '\n')) i ++;
+            if(i < size) tWords++; 
+            while(i < size && text.charAt(i) != ' ' && text.charAt(i) != '\t'  && text.charAt(i) != '\n') i ++;
+        }
 
-        if(tLen > this.len) this.len = tLen;
+        if(size > this.len) this.len = size;
         if(tWords > this.words) this.words = tWords;
     }
 
@@ -121,7 +127,8 @@ public class Article{
         if(this == o) return true;
         if((o==null) || (o.getClass()!=this.getClass())) return false;
         Article a = (Article)o;
-        return (this.id==a.getId() && this.title.equals(a.getTitle()) && this.revisions.equals(a.getRevisions()) && this.nRev==a.getNRev() && this.len==a.getLen() && this.words==a.getWords());
+        return (this.id==a.getId() && this.title.equals(a.getTitle()) && this.revisions.equals(a.getRevisions()) 
+                && this.nRev==a.getNRev() && this.len==a.getLen() && this.words==a.getWords());
     }
     
     public Article clone(){
