@@ -1,0 +1,54 @@
+\documentclass[a4paper,12pt,portuguese]{report}
+\usepackage[utf8]{inputenc} 
+\usepackage[portuguese]{babel}
+\usepackage{ragged2e}
+\usepackage{fancyvrb} 
+
+\title{Projeto de LI-3}
+\author{Martins, José(a78821)\
+        \and
+        Costa, Mariana(a78824)\
+        \and
+        Quaresma, Miguel(a77049)
+        }         
+\date{\today}
+
+\begin{document}
+
+\begin{titlepage}
+\maketitle
+\end{titlepage}
+
+\tableofcontents
+
+\chapter{Introdução}
+
+\chapter{Desenvolvimento}
+
+\section{Bibliotecas}
+Neste trabalho usamos várias bibliotecas disponiveis pelo Java, sendo de destacar as bibliotecas pertencentes ao StAX no qual nos permitiu realizar o parse dos ficheiros XML percorrendo-os aos poucos em vez de realizar o parse através de um ficheiro guardado em memória com toda a informação importante do ficheiro XML poupando assim tanto em recursos como em tempo de execução. 
+
+\section{Classes}
+Sentimos a necessidade de criar duas classes principais, sendo que uma representa artigos e outra representa contribuidores. Portanto destas classes podemos construir quantas instancias artigos ou contribuintes quisermos. 
+
+\subsection{Article.java}
+
+\subsection{Contributor.java}
+
+
+Para além disso temos mais 3 classes nas quais implementamos comparadores necessarios para implementar algumas queries. 
+
+\subsection{ArtCompareText.java}
+
+\subsection{ArtCompareWords.java}
+
+\subsection{ComparatorContributorRevs.java}
+
+Por fim a classe "mãe". 
+
+\subsection{QueryEngineImpl.java}
+Possui um HashMap de artigos e um TreeMap de contribuintes de modo a agregar artigos num conjunto e contribuidores também num conjunto, sobre os quais podemos aplicar métodos. Ainda nessa classe possuímos dois longs de modo a guardar os artigos únicos(artUn) e os artigos totais(artTot).
+
+\chapter{Conclusão}
+
+\end{document}
