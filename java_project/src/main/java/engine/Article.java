@@ -108,12 +108,13 @@ public class Article{
 
     public void setNewLenghtWords(String text){
         long tWords=0L, i=0L;
-        char prev=' ';
-
-        for(char c: text.toCharArray()){
-            if((prev == ' ' || prev == '\t'  || prev == '\n') && c!=' ' && c!='\t' && c!= '\n') tWords++; 
+        byte prev=32;
+        
+        //(byte)' '=32, (byte)'\t'=9, (byte)'\n'=10
+        for(byte b: text.getBytes()){
+            if((prev==32 || prev==9 || prev==10) && b!=32 && b!=9 && b!=10) tWords++;
             i++;
-            prev=c;
+            prev=b;
         }
 
         if(i > this.len) this.len = i;
