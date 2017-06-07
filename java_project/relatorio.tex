@@ -24,7 +24,7 @@
 
 \section{Introdução}
 A \textbf{Wikipédia} é uma  das muitas fontes de informação disponíveis na Web, possuindo uma quantidade bastante considerável de dados/informação.
-No entanto para que esta informação seja útil é necessário saber processá-la e acima de tudo fazê-lo em tempo útil, sendo para isso necessário recorrer a estruturas de dados quepermitam uma pesquisa rápida mas sem uso excessivo de memória. O objetivo deste projeto é, por isso, implementar uma aplicação (em \textit{Java}) que responde a um conjunto de \textit{queries} relativas a \textit{snapshots} da \textbf{Wikipédia} em tempo reduzido e de uma forma correta, recorrendo para isso a um conjunto de recursos já existentes e a estruturas de dados que permitam atingir este objetivo.
+No entanto para que esta informação seja útil é necessário saber processá-la e acima de tudo fazê-lo em tempo útil, sendo para isso necessário recorrer a estruturas de dados que permitam uma pesquisa rápida mas sem uso excessivo de memória. O objetivo deste projeto é, por isso, implementar uma aplicação (em \textit{Java}) que responde a um conjunto de \textit{queries} relativas a \textit{snapshots} da \textbf{Wikipédia} em tempo reduzido e de uma forma correta, recorrendo para isso a um conjunto de recursos já existentes e a estruturas de dados que permitam atingir este objetivo.
 
 \section{Desenvolvimento}
 
@@ -48,22 +48,24 @@ A classe article, seguindo a linha do trabalho anterior e de modo a responder à
     private long words; //das revisões, o número de palavras 
                         //da revisão com mais palavras
 \end{verbatim}
-Nesta classe é implementado gets, sets, equals, toString, clone e compareTo, sendo de destacar o método:
-\begin{verbatim}
-public void setNewLenghtWords(String text)
-\end{verbatim}
-visto ser o método que calcula o tamanho e o número de palavras de um texto passado como argumento e caso os valores sejam maiores que os existentes nas variaveis de instancia \texttt{len} e \texttt{words} atualiza-os.
+Nesta classe, para além dos métodos usuais, é de destacar o método \texttt{public void setNewLenghtWords(String text)} visto ser este o  método que calcula o número de palavras e caractéres de uma String passada como argumento e caso os valores sejam maiores que os existentes nas variáveis de instância \texttt{len} e \texttt{words} atualiza-os.
 
 \subsubsection{Contributor.java}
+Quanto à classe contributor, como na classe article seguimos as directrizes do trabalho anterior e como tal possui as seguintes variáveis de instancia:
+\begin{verbatim}
+    private long id; //id do contribuidor
+    private String name; //nome do contribuidor
+    private int nRev; // número de revisões do contribuidor
+\end{verbatim}
+Nesta classe, foram apenas implementados os métodos usuais (gets, sets, clone, etc).
 
-
-Para além disso temos mais 3 classes nas quais implementamos comparadores necessarios para implementar algumas queries. 
-
-\subsubsection{ArtCompareText.java}
-
-\subsubsection{ArtCompareWords.java}
-
-\subsubsection{ComparatorContributorRevs.java}
+\subsection{Comparators}
+Para além das classes já referidas estão presentes mais 3 classes de comparadores necessários para implementar algumas queries, sendo esses comparadores os seguintes:
+\begin{itemsize}
+\item[\texttt{ArtCompareText.java}]: compara dois artigos devolvendo -1 caso o 1º argumento tenha mais caracteres ou caso tenha o mesmo número de caracteres que o 2º argumento, mas tenho um menor id, caso contrário devolve 1;
+\item[\texttt{ArtCompareWords.java}]:compara dois artigos devolvendo -1 caso o 1    º argumento tenha mais palavras ou caso tenha o mesmo número de palavras que o 2º argumento, mas tenho um menor id, caso contrário devolve 1;
+\item[\texttt{ComparatorContributorRevs.java}]: compara dois contribuidores devolvendo -1 caso o 1º argumento tenha mais revisões ou caso tenha o mesmo número de revisões que o 2º argumento, mas tenho um menor id, caso contrário devolve 1;
+\end{itemsize}
 
 Por fim a classe "mãe". 
 
