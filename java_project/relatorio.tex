@@ -27,6 +27,8 @@
 A \textbf{Wikipédia} é uma  das muitas fontes de informação disponíveis na Web, possuindo uma quantidade bastante considerável de dados/informação.
 No entanto para que esta informação seja útil é necessário saber processá-la e acima de tudo fazê-lo em tempo útil, sendo para isso necessário recorrer a estruturas de dados que permitam uma pesquisa rápida mas sem uso excessivo de memória. O objetivo deste projeto é, por isso, implementar uma aplicação (em \textit{Java}) que responde a um conjunto de \textit{queries} relativas a \textit{snapshots} da \textbf{Wikipédia} em tempo reduzido e de uma forma correta, recorrendo para isso a um conjunto de recursos já existentes e a estruturas de dados que permitam atingir este objetivo.
 
+\newpage
+
 \section{Desenvolvimento}
 
 \subsection{Bibliotecas}
@@ -60,16 +62,24 @@ Quanto à classe contributor, como na classe article seguimos as directrizes do 
 \end{verbatim}
 Nesta classe, foram apenas implementados os métodos usuais (gets, sets, clone, etc).
 
-\subsection{Comparators}
+\subsubsection{Comparators}
 Para além das classes já referidas estão presentes mais 3 classes de comparadores necessários para implementar algumas queries, sendo esses comparadores os seguintes:
 \begin{itemize}[align=left]
-\item[\texttt{ArtCompareText.java}]: compara dois artigos devolvendo -1 caso o 1º argumento tenha mais caracteres ou caso tenha o mesmo número de caracteres que o 2º argumento, mas tenho um menor id, caso contrário devolve 1;
-\item[\texttt{ArtCompareWords.java}]: compara dois artigos devolvendo -1 caso o 1    º argumento tenha mais palavras ou caso tenha o mesmo número de palavras que o 2º argumento, mas tenho um menor id, caso contrário devolve 1;
-\item[\texttt{ComparatorContributorRevs.java}]: compara dois contribuidores devolvendo -1 caso o 1º argumento tenha mais revisões ou caso tenha o mesmo número de revisões que o 2º argumento, mas tenho um menor id, caso contrário devolve 1;
+\item[\texttt{ArtCompareText.java}]: compara dois artigos devolvendo -1 caso o 1º argumento tenha mais caracteres ou caso tenha o mesmo número de caracteres que o 2º argumento, mas tenho um menor id, caso contrário devolve 1, é usado na query \texttt{top_20_largest_articles};
+\item[\texttt{ArtCompareWords.java}]: compara dois artigos devolvendo -1 caso o 1º argumento tenha mais palavras ou caso tenha o mesmo número de palavras que o 2º argumento, mas tenho um menor id, caso contrário devolve 1, é usado na query \texttt{top_N_articles_with_more_words};
+\item[\texttt{ComparatorContributorRevs.java}]: compara dois contribuidores devolvendo -1 caso o 1º argumento tenha mais revisões ou caso tenha o mesmo número de revisões que o 2º argumento, mas tenho um menor id, caso contrário devolve 1, é usado na query \texttt{top_10_contributors};
 \end{itemize}
 
-\subsection{QueryEngineImpl.java}
-Possui um HashMap de artigos e um TreeMap de contribuintes de modo a agregar artigos num conjunto e contribuidores também num conjunto, sobre os quais podemos aplicar métodos. Ainda nessa classe possuímos dois longs de modo a guardar os artigos únicos(artUn) e os artigos totais(artTot).
+\subsubsection{QueryEngineImpl.java}
+Possui um HashMap de artigos e um TreeMap de contribuintes de modo a agregar artigos num conjunto e contribuidores também num conjunto, sobre os quais podemos aplicar métodos. Ainda nessa classe possuímos dois longs de modo a guardar os artigos únicos(artUn) e os artigos totais(artTot). Nesta classe é realizado o processamento dos snapshots bem como é implementado as queries propostas. Quanto ao processamento dos snapshots está dividido em quatro métodos:
+\begin{itemize}[align=left]
+\item[\texttt{public void load(int, ArrayList<String>)}] : percorre a lista de snapshots e chama o método processDoc, apanhando as exceções possiveis;
+\item[\texttt{private void processDoc(FileInputStream ) throws IllegalStateException, XMLStreamException, FactoryConfigurationError}] : sempre que encontra uma tag \texttt{page} chama o método processPage e vai calculando tanto os artigos totais como unicos;
+\item[\texttt{private boolean processPage(XMLStreamReader ) throws XMLStreamException, IllegalStateException}] : cria o artigo caso necessario, senão atualiza os valores, chama contudo o método processRevision de modo a ser processado a tag \texttt{revision}, devolve se é um novo artigo ou não;
+\item[\texttt{private void processRevision(XMLStreamReader , long ) throws XMLStreamException, IllegalStateException}] : adiciona a revisão ao artigo correspondente bem como caso seja um novo contribuidor adiciona-lo ao Map de contribuidores, caso contrário adiciona uma revisão ao contribuidor.
+\end{itemize}
+
+\newpage
 
 \section{Conclusão}
 
