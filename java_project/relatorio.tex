@@ -1,6 +1,7 @@
 \documentclass[a4paper,11pt]{article}
 \usepackage[utf8]{inputenc} 
 \usepackage[portuges]{babel}
+\usepackage{enumitem}
 \usepackage{ragged2e}
 \usepackage{fancyvrb} 
 
@@ -61,15 +62,13 @@ Nesta classe, foram apenas implementados os métodos usuais (gets, sets, clone, 
 
 \subsection{Comparators}
 Para além das classes já referidas estão presentes mais 3 classes de comparadores necessários para implementar algumas queries, sendo esses comparadores os seguintes:
-\begin{itemsize}
+\begin{itemize}[align=left]
 \item[\texttt{ArtCompareText.java}]: compara dois artigos devolvendo -1 caso o 1º argumento tenha mais caracteres ou caso tenha o mesmo número de caracteres que o 2º argumento, mas tenho um menor id, caso contrário devolve 1;
-\item[\texttt{ArtCompareWords.java}]:compara dois artigos devolvendo -1 caso o 1    º argumento tenha mais palavras ou caso tenha o mesmo número de palavras que o 2º argumento, mas tenho um menor id, caso contrário devolve 1;
+\item[\texttt{ArtCompareWords.java}]: compara dois artigos devolvendo -1 caso o 1    º argumento tenha mais palavras ou caso tenha o mesmo número de palavras que o 2º argumento, mas tenho um menor id, caso contrário devolve 1;
 \item[\texttt{ComparatorContributorRevs.java}]: compara dois contribuidores devolvendo -1 caso o 1º argumento tenha mais revisões ou caso tenha o mesmo número de revisões que o 2º argumento, mas tenho um menor id, caso contrário devolve 1;
-\end{itemsize}
+\end{itemize}
 
-Por fim a classe "mãe". 
-
-\subsubsection{QueryEngineImpl.java}
+\subsection{QueryEngineImpl.java}
 Possui um HashMap de artigos e um TreeMap de contribuintes de modo a agregar artigos num conjunto e contribuidores também num conjunto, sobre os quais podemos aplicar métodos. Ainda nessa classe possuímos dois longs de modo a guardar os artigos únicos(artUn) e os artigos totais(artTot).
 
 \section{Conclusão}
