@@ -1,6 +1,6 @@
-\documentclass[a4paper,12pt,portuguese]{report}
+\documentclass[a4paper,11pt]{article}
 \usepackage[utf8]{inputenc} 
-\usepackage[portuguese]{babel}
+\usepackage[portuges]{babel}
 \usepackage{ragged2e}
 \usepackage{fancyvrb} 
 
@@ -20,18 +20,21 @@
 \end{titlepage}
 
 \tableofcontents
+\newpage
 
-\chapter{Introdução}
+\section{Introdução}
+A \textbf{Wikipédia} é uma  das muitas fontes de informação disponíveis na Web, possuindo uma quantidade bastante considerável de dados/informação.
+No entanto para que esta informação seja útil é necessário saber processá-la e acima de tudo fazê-lo em tempo útil, sendo para isso necessário recorrer a estruturas de dados quepermitam uma pesquisa rápida mas sem uso excessivo de memória. O objetivo deste projeto é, por isso, implementar uma aplicação (em \textit{Java}) que responde a um conjunto de \textit{queries} relativas a \textit{snapshots} da \textbf{Wikipédia} em tempo reduzido e de uma forma correta, recorrendo para isso a um conjunto de recursos já existentes e a estruturas de dados que permitam atingir este objetivo.
 
-\chapter{Desenvolvimento}
+\section{Desenvolvimento}
 
-\section{Bibliotecas}
-Neste trabalho usamos várias bibliotecas disponiveis pelo Java, sendo de destacar as bibliotecas pertencentes ao StAX no qual nos permitiu realizar o parse dos ficheiros XML percorrendo-os aos poucos em vez de realizar o parse através de um ficheiro guardado em memória com toda a informação importante do ficheiro XML poupando assim tanto em recursos como em tempo de execução. 
+\subsection{Bibliotecas}
+Neste trabalho usamos várias bibliotecas disponibilizadas pelo Java, sendo de destacar as bibliotecas pertencentes ao StAX no qual nos permitiu realizar o parse dos ficheiros XML percorrendo-os aos poucos em vez de realizar o parse através de um ficheiro guardado em memória com toda a informação importante do ficheiro XML poupando assim tanto em recursos como em tempo de execução. 
 
-\section{Classes}
+\subsection{Classes}
 Sentimos a necessidade de criar duas classes principais, sendo que uma representa artigos e outra representa contribuidores. Portanto destas classes podemos construir quantas instancias artigos ou contribuintes quisermos. 
 
-\subsection{Article.java}
+\subsubsection{Article.java}
 A classe article, seguindo a linha do trabalho anterior e de modo a responder às queries propostas possui as seguintes variáveis de instancia:
 \begin{verbatim}
     private long id; //id do artigo
@@ -51,22 +54,22 @@ public void setNewLenghtWords(String text)
 \end{verbatim}
 visto ser o método que calcula o tamanho e o número de palavras de um texto passado como argumento e caso os valores sejam maiores que os existentes nas variaveis de instancia \texttt{len} e \texttt{words} atualiza-os.
 
-\subsection{Contributor.java}
+\subsubsection{Contributor.java}
 
 
 Para além disso temos mais 3 classes nas quais implementamos comparadores necessarios para implementar algumas queries. 
 
-\subsection{ArtCompareText.java}
+\subsubsection{ArtCompareText.java}
 
-\subsection{ArtCompareWords.java}
+\subsubsection{ArtCompareWords.java}
 
-\subsection{ComparatorContributorRevs.java}
+\subsubsection{ComparatorContributorRevs.java}
 
 Por fim a classe "mãe". 
 
-\subsection{QueryEngineImpl.java}
+\subsubsection{QueryEngineImpl.java}
 Possui um HashMap de artigos e um TreeMap de contribuintes de modo a agregar artigos num conjunto e contribuidores também num conjunto, sobre os quais podemos aplicar métodos. Ainda nessa classe possuímos dois longs de modo a guardar os artigos únicos(artUn) e os artigos totais(artTot).
 
-\chapter{Conclusão}
+\section{Conclusão}
 
 \end{document}

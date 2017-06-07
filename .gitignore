@@ -5,3 +5,8 @@
 ## Others
 **/*.swp
 *.class
+
+## Latex
+**/*.aux
+**/*.log
+**/*.toc
