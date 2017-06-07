@@ -32,6 +32,24 @@ Neste trabalho usamos várias bibliotecas disponiveis pelo Java, sendo de destac
 Sentimos a necessidade de criar duas classes principais, sendo que uma representa artigos e outra representa contribuidores. Portanto destas classes podemos construir quantas instancias artigos ou contribuintes quisermos. 
 
 \subsection{Article.java}
+A classe article, seguindo a linha do trabalho anterior e de modo a responder às queries propostas possui as seguintes variáveis de instancia:
+\begin{verbatim}
+    private long id; //id do artigo
+    private String title; //título do artigo
+    private Map<Long,String> revisions; // revisões do artigo
+                                        // chave: id da revisão
+                                        // valor: timestamp da revisão
+    private long nRev; //número de revisões
+    private long len; //das revisões, o número de caracteres 
+                      //da revisão com mais caracteres 
+    private long words; //das revisões, o número de palavras 
+                        //da revisão com mais palavras
+\end{verbatim}
+Nesta classe é implementado gets, sets, equals, toString, clone e compareTo, sendo de destacar o método:
+\begin{verbatim}
+public void setNewLenghtWords(String text)
+\end{verbatim}
+visto ser o método que calcula o tamanho e o número de palavras de um texto passado como argumento e caso os valores sejam maiores que os existentes nas variaveis de instancia \texttt{len} e \texttt{words} atualiza-os.
 
 \subsection{Contributor.java}
 
