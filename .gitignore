@@ -5,8 +5,10 @@
 ## Others
 **/*.swp
 *.class
+**/snapshot*
 
 ## Latex
 **/*.aux
 **/*.log
 **/*.toc
+

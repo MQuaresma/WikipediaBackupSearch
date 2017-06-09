@@ -20,12 +20,14 @@ import java.util.stream.Collectors;
 public class QueryEngineImpl implements Interface{
 	
 	//Instance variavels
-	private static long artUn;
+	private static long totRev;
+    private static long artUn;
 	private static long artTot;
 	private static HashMap<Long,Article> articles;
 	private static TreeMap<Long,Contributor> contributors;	
 
     public void init() {
+        QueryEngineImpl.totRev = 0;
         QueryEngineImpl.artUn = 0;
         QueryEngineImpl.artTot = 0;
         QueryEngineImpl.articles = new HashMap<Long,Article>();
@@ -75,9 +77,9 @@ public class QueryEngineImpl implements Interface{
             if(parser.isStartElement()){
                 if(parser.getLocalName().equals("title")) title = parser.getElementText(); 
                 else if(parser.getLocalName().equals("id")){
-                        id = Long.parseLong(parser.getElementText());
-                        newPage = !QueryEngineImpl.articles.containsKey(id);
-                     }
+                    id = Long.parseLong(parser.getElementText());
+                    newPage = !QueryEngineImpl.articles.containsKey(id);
+                }
             }    
         }
 
@@ -126,6 +128,7 @@ public class QueryEngineImpl implements Interface{
 
         //nova revisao encontrada
         if(newRev){
+            QueryEngineImpl.totRev++;
             auxA.getRevisionsP().put(idR, timestamp);  
             if(parser.getLocalName().equals("text"))
                     auxA.setNewLenghtWords(parser.getElementText()); 
@@ -143,10 +146,11 @@ public class QueryEngineImpl implements Interface{
     }
 
     public long all_revisions() {
-        return QueryEngineImpl.articles.values()
+        return QueryEngineImpl.totRev;
+        /*return QueryEngineImpl.articles.values()
                                        .stream()
                                        .mapToLong(Article::getNRev)
-                                       .sum();
+                                       .sum();*/
     }
 
     public ArrayList<Long> top_10_contributors() {
@@ -209,7 +213,6 @@ public class QueryEngineImpl implements Interface{
     //devolve o timestamp para uma certa revisão de um artigo. Caso não exista
     //a revisão daquele artigo a interrogação retorna o valor NULL.
     public String article_timestamp(long article_id, long revision_id) {
-        
         if(QueryEngineImpl.articles.containsKey(article_id) && QueryEngineImpl.articles.get(article_id).getRevisions().containsKey(revision_id))
             return QueryEngineImpl.articles.get(article_id).getRevisions().get(revision_id);
         else return null;
