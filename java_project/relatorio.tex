@@ -75,7 +75,16 @@ Possui um HashMap de artigos e um TreeMap de contribuintes de modo a agregar art
 \item[\texttt{public void load(int, ArrayList<String>)}] : percorre a lista de snapshots e chama o método processDoc, tendo o cuidado de tratar as exceções que ocorram;
 \item[\texttt{private void processDoc(FileInputStream ) throws IllegalStateException, XMLStreamException, FactoryConfigurationError}] : sempre que encontra uma tag \texttt{page} chama o método \texttt{processPage}, calculando também o número de artigos totais e únicos, de acordo com o resultado do método \texttt{processPage};
 \item[\texttt{private boolean processPage(XMLStreamReader ) throws XMLStreamException, IllegalStateException}]: responsável por processar artigos novos, ou atualizar artigos caso estes já tenham sido encontrados em snapshots anteriores, caso o artigo em causa ainda não tenha sido encontrado adiciona-o (artigo) ao HashMap de seguida chama o método \texttt{processRevision} de modo a ser processada a revisão correspondente, devolve se o artigo é novo ou não;
-\item[\texttt{private void processRevision(XMLStreamReader , long ) throws XMLStreamException, IllegalStateException}]: responsável por processar a revisão encontrada, caso esta seja um nova revisão, adiciona o autor da mesma(contribuidor) ao TreeMap usado para o efeito, ou incrementa o número de revisões do mesmo caso este já esteja presente, atualiza o número total de revisões e guarda o seu (da revisão) \texttt{timestamp} associado ao id, ao Map do artigo em questão
+\item[\texttt{private void processRevision(XMLStreamReader , long ) throws XMLStreamException, IllegalStateException}]: responsável por processar a revisão encontrada, caso esta seja uma nova revisão, adiciona o autor da mesma(contribuidor) ao TreeMap usado para o efeito, ou incrementa o número de revisões do mesmo caso este já esteja presente, atualiza o número total de revisões e guarda o seu (da revisão) \texttt{timestamp} associado ao id, ao Map do artigo em questão.
+\end{itemize}
+
+\subsection{queries}
+Nas 3 primeiras queries(all\_articles, unique\_articles, all\_revisions), devido à nossa implementação, a resposta é direta (reliza-se return de uma variável de classe). Em relação às queries contributor\_name, article\_title e article\_timestamp a sua implementação é também bastante simples, visto que basta verificar se o que queremos devolver está presente na estrutura e se estiver devolvemos caso contrário devolvemos null. Por fim, as restantes queries utilizam streams, como mostramos de seguida:
+\begin{itemize}[align=left]
+\item[\texttt{top\_10\_contribuitors}] :
+\item[\texttt{top\_20\_largest\_articles}] :
+\item[\texttt{top\_N\_articles\_with\_more\_words}] :
+\item[\texttt{titles\_with\_prefix}] :
 \end{itemize}
 
 \newpage
