@@ -12,7 +12,6 @@ public class Article{
 	private long id;
 	private String title;
 	private Map<Long,String> revisions;
-	private long nRev;
 	private long len;
 	private long words;
 
@@ -21,7 +20,6 @@ public class Article{
 		this.id = 0;
 		this.title = null;
 	    this.revisions = new HashMap<Long,String>();
-        this.nRev = 0;
         this.len = 0;
         this.words = 0;
 	}
@@ -34,7 +32,6 @@ public class Article{
         for(Map.Entry<Long,String> e: rev.entrySet())
             this.revisions.put(e.getKey(),e.getValue());
 
-        this.nRev = nRev;
         this.len = len;
         this.words = words;
     }
@@ -43,7 +40,6 @@ public class Article{
         this.id = a.getId();
         this.title = a.getTitle();
         this.revisions = a.getRevisions();
-        this.nRev = a.getNRev();
         this.len = a.getLen();
         this.words = a.getWords();
     }
@@ -68,10 +64,6 @@ public class Article{
         return this.revisions;
     }
 
-    public long getNRev(){
-        return this.nRev;
-    }
-
     public long getLen(){
         return this.len;
     }
@@ -92,10 +84,6 @@ public class Article{
         this.revisions = new HashMap<Long,String>();
         for(Map.Entry<Long,String> e: rev.entrySet())
             this.revisions.put(e.getKey(),e.getValue());
-    }
-
-    public void setNRev(long nRev){
-        this.nRev = nRev;
     }
 
     public void setLen(long len){
@@ -121,16 +109,11 @@ public class Article{
         if(tWords > this.words) this.words = tWords;
     }
 
-    public void incNRev(){
-        this.nRev ++;
-    }
-    
     public boolean equals(Object o){
         if(this == o) return true;
         if((o==null) || (o.getClass()!=this.getClass())) return false;
         Article a = (Article)o;
-        return (this.id==a.getId() && this.title.equals(a.getTitle()) && this.revisions.equals(a.getRevisions()) 
-                && this.nRev==a.getNRev() && this.len==a.getLen() && this.words==a.getWords());
+        return (this.id==a.getId() && this.title.equals(a.getTitle()) && this.revisions.equals(a.getRevisions()) && this.len==a.getLen() && this.words==a.getWords());
     }
     
     public Article clone(){
@@ -142,7 +125,6 @@ public class Article{
         r.append("Id: ").append(this.id);
         r.append(" Title: ").append(this.title);
         r.append(" Revisions: ").append(this.revisions.toString());
-        r.append(" nRev: ").append(this.nRev);
         r.append(" Len: ").append(this.len);
         r.append(" Words: ").append(this.words);
         return r.toString();
@@ -154,7 +136,6 @@ public class Article{
         r = r*23 + (int)(this.id ^ (this.id >>> 32));
         r = r*23 + this.title.hashCode();
         r = r*23 + this.revisions.hashCode();
-        r = r*23 + (int)(this.nRev ^ (this.nRev >>> 32));
         r = r*23 + (int)(this.len ^ (this.len >>> 32));
         r = r*23 + (int)(this.words ^ (this.words >>> 32));
         return r;

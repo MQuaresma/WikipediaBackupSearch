@@ -132,7 +132,6 @@ public class QueryEngineImpl implements Interface{
             auxA.getRevisionsP().put(idR, timestamp);  
             if(parser.getLocalName().equals("text"))
                     auxA.setNewLenghtWords(parser.getElementText()); 
-            auxA.incNRev();
         }
         
     }
