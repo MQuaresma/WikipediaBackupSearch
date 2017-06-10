@@ -146,14 +146,9 @@ public class QueryEngineImpl implements Interface{
 
     public long all_revisions() {
         return QueryEngineImpl.totRev;
-        /*return QueryEngineImpl.articles.values()
-                                       .stream()
-                                       .mapToLong(Article::getNRev)
-                                       .sum();*/
     }
 
     public ArrayList<Long> top_10_contributors() {
-        
         return QueryEngineImpl.contributors.values()
                                            .stream()
                                            .sorted(new ComparatorContributorRevs())
@@ -165,7 +160,6 @@ public class QueryEngineImpl implements Interface{
     //devolve o nome do autor com um determinado identificador. Caso não exista
     //o autor a interrogação retorna o valor NULL.
     public String contributor_name(long contributor_id) {
-        
         if(QueryEngineImpl.contributors.containsKey(contributor_id))
             return QueryEngineImpl.contributors.get(contributor_id).getName();
         else return null;
@@ -184,7 +178,6 @@ public class QueryEngineImpl implements Interface{
     //o artigo a interrogação retorna o valor NULL. No caso de um determinado artigo ter várias
     //versões (revisões) deve ser considerado o título da revisão mais recente.
     public String article_title(long article_id) {
-        
         if(QueryEngineImpl.articles.containsKey(article_id))
             return QueryEngineImpl.articles.get(article_id).getTitle();
         else return null;
@@ -199,7 +192,6 @@ public class QueryEngineImpl implements Interface{
     }
 
     public ArrayList<String> titles_with_prefix(String prefix) {
-
         return QueryEngineImpl.articles.values()
                                        .stream()
                                        .map(a -> a.getTitle())

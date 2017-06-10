@@ -31,8 +31,8 @@ No entanto para que esta informação seja útil é necessário saber processá-
 
 \section{Desenvolvimento}
 
-\subsection{Bibliotecas}
-Neste trabalho usamos várias bibliotecas disponibilizadas pelo Java, sendo de destacar as bibliotecas pertencentes ao StAX no qual nos permitiu realizar o parse dos ficheiros XML percorrendo-os aos poucos em vez de realizar o parse através de um ficheiro guardado em memória com toda a informação importante do ficheiro XML poupando assim tanto em recursos como em tempo de execução. 
+\subsection{Parsing dos snapshots}
+Os dados sobre os quais incidem as \textit{queries} às quais o projeto responde encontram-se no formato XML sendo por isso necessário processá-los de forma adequada, isto é, retirar a informação útil tendo em conta a sintaxe deste tipo de ficheiro. Para processar ficheiros XML existem diversas API's , sendo que este projeto recorre à StAX para conseguir esta funcionalidade. A StAX permite a leitura dos ficheiros on-demand, isto é, ao contrário da DOM que guarda o resultado do parsing do ficheiro num objeto árvore em memória, a StAX lê o ficheiro de forma gradual permitindo reduzir a quantidade de memória utilizada. Este API apresenta no entanto a desvantangem de não permitir o acesso a informação(eventos) que já tenha sido processada logo caso a mesma seja necessária posteriormente à sua leitura é preciso guardá-la.
 
 \subsection{Classes}
 Sentimos a necessidade de criar duas classes principais, sendo que uma representa artigos e outra representa contribuidores. Portanto destas classes podemos construir quantas instancias artigos ou contribuintes quisermos. 
@@ -45,7 +45,6 @@ A classe article, seguindo a linha do trabalho anterior e de modo a responder à
     private Map<Long,String> revisions; // revisões do artigo
                                         // chave: id da revisão
                                         // valor: timestamp da revisão
-    private long nRev; //número de revisões
     private long len; //das revisões, o número de caracteres 
                       //da revisão com mais caracteres 
     private long words; //das revisões, o número de palavras 
@@ -65,18 +64,18 @@ Nesta classe, foram apenas implementados os métodos usuais (gets, sets, clone, 
 \subsubsection{Comparators}
 Para além das classes já referidas estão presentes mais 3 classes de comparadores necessários para implementar algumas queries, sendo esses comparadores os seguintes:
 \begin{itemize}[align=left]
-\item[\texttt{ArtCompareText.java}]: compara dois artigos devolvendo -1 caso o 1º argumento tenha mais caracteres ou caso tenha o mesmo número de caracteres que o 2º argumento, mas tenho um menor id, caso contrário devolve 1, é usado na query \texttt{top\_20\_largest\_articles};
-\item[\texttt{ArtCompareWords.java}]: compara dois artigos devolvendo -1 caso o 1º argumento tenha mais palavras ou caso tenha o mesmo número de palavras que o 2º argumento, mas tenho um menor id, caso contrário devolve 1, é usado na query \texttt{top\_N\_articles\_with\_more\_words};
-\item[\texttt{ComparatorContributorRevs.java}]: compara dois contribuidores devolvendo -1 caso o 1º argumento tenha mais revisões ou caso tenha o mesmo número de revisões que o 2º argumento, mas tenho um menor id, caso contrário devolve 1, é usado na query \texttt{top\_10\_contributors};
+\item[\texttt{ArtCompareText.java}]: compara dois artigos devolvendo -1 caso o 1º argumento tenha mais caracteres ou caso tenha o mesmo número de caracteres que o 2º argumento, mas tenha um menor id, caso contrário devolve 1; usado na query \texttt{top\_20\_largest\_articles};
+\item[\texttt{ArtCompareWords.java}]: compara dois artigos devolvendo -1 caso o 1º argumento tenha mais palavras ou caso tenha o mesmo número de palavras que o 2º argumento, mas tenha um menor id, caso contrário devolve 1; usado na query \texttt{top\_N\_articles\_with\_more\_words};
+\item[\texttt{ComparatorContributorRevs.java}]: compara dois contribuidores devolvendo -1 caso o 1º argumento tenha mais revisões ou caso tenha o mesmo número de revisões que o 2º argumento, mas tenha um menor id, caso contrário devolve 1; usado na query \texttt{top\_10\_contributors};
 \end{itemize}
 
 \subsubsection{QueryEngineImpl.java}
-Possui um HashMap de artigos e um TreeMap de contribuintes de modo a agregar artigos num conjunto e contribuidores também num conjunto, sobre os quais podemos aplicar métodos. Ainda nessa classe possuímos dois longs de modo a guardar os artigos únicos(artUn) e os artigos totais(artTot). Nesta classe é realizado o processamento dos snapshots bem como é implementado as queries propostas. Quanto ao processamento dos snapshots está dividido em quatro métodos:
+Possui um HashMap de artigos e um TreeMap de contribuintes de modo a agregar artigos num conjunto e contribuidores noutro, sobre os quais podemos invocar métodos. Ainda nessa classe possuímos três longs de modo a guardar os artigos únicos(artUn), os artigos totais(artTot), e o número de revisões totais(totRev). É nesta classe que é implementado o processamento dos snapshots bem como as queries propostas. Quanto ao processamento dos snapshots, este encontra-se dividido em quatro métodos constituintes:
 \begin{itemize}[align=left]
-\item[\texttt{public void load(int, ArrayList<String>)}] : percorre a lista de snapshots e chama o método processDoc, apanhando as exceções possiveis;
-\item[\texttt{private void processDoc(FileInputStream ) throws IllegalStateException, XMLStreamException, FactoryConfigurationError}] : sempre que encontra uma tag \texttt{page} chama o método processPage e vai calculando tanto os artigos totais como unicos;
-\item[\texttt{private boolean processPage(XMLStreamReader ) throws XMLStreamException, IllegalStateException}] : cria o artigo caso necessario, senão atualiza os valores, chama contudo o método processRevision de modo a ser processado a tag \texttt{revision}, devolve se é um novo artigo ou não;
-\item[\texttt{private void processRevision(XMLStreamReader , long ) throws XMLStreamException, IllegalStateException}] : adiciona a revisão ao artigo correspondente bem como caso seja um novo contribuidor adiciona-lo ao Map de contribuidores, caso contrário adiciona uma revisão ao contribuidor.
+\item[\texttt{public void load(int, ArrayList<String>)}] : percorre a lista de snapshots e chama o método processDoc, tendo o cuidado de tratar as exceções que ocorram;
+\item[\texttt{private void processDoc(FileInputStream ) throws IllegalStateException, XMLStreamException, FactoryConfigurationError}] : sempre que encontra uma tag \texttt{page} chama o método \texttt{processPage}, calculando também o número de artigos totais e únicos, de acordo com o resultado do método \texttt{processPage};
+\item[\texttt{private boolean processPage(XMLStreamReader ) throws XMLStreamException, IllegalStateException}]: responsável por processar artigos novos, ou atualizar artigos caso estes já tenham sido encontrados em snapshots anteriores, caso o artigo em causa ainda não tenha sido encontrado adiciona-o (artigo) ao HashMap de seguida chama o método \texttt{processRevision} de modo a ser processada a revisão correspondente, devolve se o artigo é novo ou não;
+\item[\texttt{private void processRevision(XMLStreamReader , long ) throws XMLStreamException, IllegalStateException}]: responsável por processar a revisão encontrada, caso esta seja um nova revisão, adiciona o autor da mesma(contribuidor) ao TreeMap usado para o efeito, ou incrementa o número de revisões do mesmo caso este já esteja presente, atualiza o número total de revisões e guarda o seu (da revisão) \texttt{timestamp} associado ao id, ao Map do artigo em questão
 \end{itemize}
 
 \newpage
