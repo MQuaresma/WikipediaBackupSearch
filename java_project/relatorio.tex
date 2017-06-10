@@ -78,8 +78,8 @@ Possui um HashMap de artigos e um TreeMap de contribuintes de modo a agregar art
 \item[\texttt{private void processRevision(XMLStreamReader , long ) throws XMLStreamException, IllegalStateException}]: responsável por processar a revisão encontrada, caso esta seja uma nova revisão, adiciona o autor da mesma(contribuidor) ao TreeMap usado para o efeito, ou incrementa o número de revisões do mesmo caso este já esteja presente, atualiza o número total de revisões e guarda o seu (da revisão) \texttt{timestamp} associado ao id, ao Map do artigo em questão.
 \end{itemize}
 
-\subsection{queries}
-Nas 3 primeiras queries(all\_articles, unique\_articles, all\_revisions), devido à nossa implementação, a resposta é direta (reliza-se return de uma variável de classe). Em relação às queries contributor\_name, article\_title e article\_timestamp a sua implementação é também bastante simples, visto que basta verificar se o que queremos devolver está presente na estrutura e se estiver devolvemos caso contrário devolvemos null. Por fim, as restantes queries utilizam streams, como mostramos de seguida:
+\subsection{Queries}
+A resposta às três primeiras \textit{queries}(\texttt{all\_articles, unique\_articles, all\_revisions}) é imediata visto que o resultado das mesmas se encontra armazenado na três variáveis de instancia anteriormente referidas. A implementação das \textit{queries} \texttt{contributor\_name, article\_title, article\_timestamp} é bastante simples, sendo necessário bastando verificar se o artigo/contribuidor existem e, em caso afirmativo, devolver o valor por meio de métodos da classe implementados para o efeito. As restantes queries utilizam \texttt{streams}, como mostramos de seguida:
 \begin{itemize}[align=left]
 \item[\texttt{top\_10\_contribuitors}] :
 \item[\texttt{top\_20\_largest\_articles}] :
@@ -90,5 +90,6 @@ Nas 3 primeiras queries(all\_articles, unique\_articles, all\_revisions), devido
 \newpage
 
 \section{Conclusão}
+
 
 \end{document}
