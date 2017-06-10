@@ -26,20 +26,20 @@
 
 \section{Introdução}
 A \textbf{Wikipédia} é uma  das muitas fontes de informação disponíveis na Web, possuindo uma quantidade bastante considerável de dados/informação.
-No entanto para que esta informação seja útil é necessário saber processá-la e acima de tudo fazê-lo em tempo útil, sendo para isso necessário recorrer a estruturas de dados que permitam uma pesquisa rápida mas sem uso excessivo de memória. O objetivo deste projeto é, por isso, implementar uma aplicação (em \textit{Java}) que responde a um conjunto de \textit{queries} relativas a \textit{snapshots} da \textbf{Wikipédia} em tempo reduzido e de uma forma correta, recorrendo para isso a um conjunto de recursos já existentes e a estruturas de dados que permitam atingir este objetivo.
+No entanto, para que esta informação seja útil é necessário saber processá-la e acima de tudo fazê-lo em tempo útil, recorrendo para isso a estruturas de dados que permitam uma pesquisa rápida mas sem uso excessivo de memória. O objetivo deste projeto é, por isso, implementar uma aplicação (em \textit{Java}) que responde a um conjunto de \textit{queries} relativas a \textit{snapshots} da \textbf{Wikipédia} em tempo reduzido e de uma forma correta, recorrendo para isso a um conjunto de recursos já existentes e a estruturas de dados que permitam atingir este objetivo.
 
 \newpage
 
 \section{Desenvolvimento}
 
 \subsection{Parsing dos snapshots}
-Os dados sobre os quais incidem as \textit{queries} às quais o projeto responde encontram-se no formato XML sendo por isso necessário processá-los de forma adequada, isto é, retirar a informação útil tendo em conta a sintaxe deste tipo de ficheiro. Para processar ficheiros XML existem diversas API's , sendo que este projeto recorre à StAX para conseguir esta funcionalidade. A StAX permite a leitura dos ficheiros on-demand, isto é, ao contrário da DOM que guarda o resultado do parsing do ficheiro num objeto árvore em memória, a StAX lê o ficheiro de forma gradual permitindo reduzir a quantidade de memória utilizada. Este API apresenta no entanto a desvantangem de não permitir o acesso a informação(eventos) que já tenha sido processada logo caso a mesma seja necessária posteriormente à sua leitura é preciso guardá-la.
+Os dados sobre os quais incidem as \textit{queries} às quais o projeto responde encontram-se no formato XML sendo por isso necessário processá-los de forma adequada, isto é, retirar a informação útil tendo em conta a sintaxe deste tipo de ficheiro. Para processar ficheiros XML existem diversas API's , sendo que este projeto recorre à StAX para conseguir esta funcionalidade. A StAX permite a leitura dos ficheiros \textit{on-demand}, isto é, ao contrário da DOM que guarda o resultado do \textit{parsing} do ficheiro num objeto árvore em memória, a StAX lê o ficheiro de forma gradual permitindo reduzir a quantidade de memória utilizada. Esta API apresenta no entanto a desvantangem de não permitir o acesso a informação(eventos) que já tenha sido processada logo, caso a mesma seja necessária posteriormente à sua leitura, é preciso guardá-la.
 
 \subsection{Classes}
-Sentimos a necessidade de criar duas classes principais, sendo que uma representa artigos e outra representa contribuidores. Portanto destas classes podemos construir quantas instancias artigos ou contribuintes quisermos. 
+Por forma a dividir os dados em duas categorias principais foram criadas duas classes, uma que representa artigos e outra que representa contribuidores, podendo assim instanciar tanto artigos como contribuidores de forma independente.
 
 \subsubsection{Article.java}
-A classe article, seguindo a linha do trabalho anterior e de modo a responder às queries propostas possui as seguintes variáveis de instancia:
+A classe \texttt{Article}, seguindo a linha do projeto anterior, e de modo a responder às \textit{queries} propostas, possui as seguintes variáveis de instância:
 \begin{verbatim}
     private long id; //id do artigo
     private String title; //título do artigo
@@ -51,46 +51,46 @@ A classe article, seguindo a linha do trabalho anterior e de modo a responder à
     private long words; //das revisões, o número de palavras 
                         //da revisão com mais palavras
 \end{verbatim}
-Nesta classe, para além dos métodos usuais, é de destacar o método \texttt{public void setNewLenghtWords(String text)} visto ser este o  método que calcula o número de palavras e caractéres de uma String passada como argumento e caso os valores sejam maiores que os existentes nas variáveis de instância \texttt{len} e \texttt{words} atualiza-os.
+Nesta classe, para além dos métodos usuais, é de destacar o método \texttt{public void setNewLenghtWords(String text)} visto ser este o  método que calcula o número de palavras e caractéres de uma \texttt{String} passada como argumento e, para os valores sejam maiores que os presentes nas variáveis de instância \texttt{len} e \texttt{words}, atualiza-os.
 
 \subsubsection{Contributor.java}
-Quanto à classe contributor, como na classe article seguimos as directrizes do trabalho anterior e como tal possui as seguintes variáveis de instancia:
+A classe \texttt{Contributor}, como a classe \texttt{Article}, segue as directrizes do trabalho anterior e, como tal, possui as seguintes variáveis de instância:
 \begin{verbatim}
     private long id; //id do contribuidor
     private String name; //nome do contribuidor
     private int nRev; // número de revisões do contribuidor
 \end{verbatim}
-Nesta classe, foram apenas implementados os métodos usuais (gets, sets, clone, etc).
+Esta classe implementa apenas os métodos usuais (\texttt{gets, sets, clone}, etc).
 
-\subsubsection{Comparators}
-Para além das classes já referidas estão presentes mais 3 classes de comparadores necessários para implementar algumas queries, sendo esses comparadores os seguintes:
+\subsubsection{Comparadores}
+Para além das classes já referidas foram ainda implementados três comparadores necessários à implementação de algumas \textit{queries}, sendo esses comparadores os seguintes:
 \begin{itemize}[align=left]
-\item[\texttt{ArtCompareText.java}]: compara dois artigos devolvendo -1 caso o 1º argumento tenha mais caracteres ou caso tenha o mesmo número de caracteres que o 2º argumento, mas tenha um menor id, caso contrário devolve 1; usado na query \texttt{top\_20\_largest\_articles};
+\item[\texttt{ArtCompareText.java}]: compara dois artigos devolvendo -1 caso o 1º argumento tenha mais caractéres ou caso tenha o mesmo número de caracteres que o 2º argumento, mas tenha um menor id, caso contrário devolve 1; usado na query \texttt{top\_20\_largest\_articles};
 \item[\texttt{ArtCompareWords.java}]: compara dois artigos devolvendo -1 caso o 1º argumento tenha mais palavras ou caso tenha o mesmo número de palavras que o 2º argumento, mas tenha um menor id, caso contrário devolve 1; usado na query \texttt{top\_N\_articles\_with\_more\_words};
 \item[\texttt{ComparatorContributorRevs.java}]: compara dois contribuidores devolvendo -1 caso o 1º argumento tenha mais revisões ou caso tenha o mesmo número de revisões que o 2º argumento, mas tenha um menor id, caso contrário devolve 1; usado na query \texttt{top\_10\_contributors};
 \end{itemize}
 
 \subsubsection{QueryEngineImpl.java}
-Possui um HashMap de artigos e um TreeMap de contribuintes de modo a agregar artigos num conjunto e contribuidores noutro, sobre os quais podemos invocar métodos. Ainda nessa classe possuímos três longs de modo a guardar os artigos únicos(artUn), os artigos totais(artTot), e o número de revisões totais(totRev). É nesta classe que é implementado o processamento dos snapshots bem como as queries propostas. Quanto ao processamento dos snapshots, este encontra-se dividido em quatro métodos constituintes:
+Possui um \texttt{HashMap} de artigos e um \texttt{TreeMap} de contribuintes de modo a agregar artigos num conjunto e contribuidores noutro, sobre os quais podemos invocar métodos. Esta classe possui ainda três \texttt{longs} de modo a guardar o número de artigos únicos(artUn),a rtigos totais(artTot), e o número de revisões total(totRev). É nesta classe que é implementado o processamento dos \textit{snapshots} bem como as \textit{queries} propostas. Quanto ao processamento dos \textit{snapshots}, este encontra-se dividido em quatro métodos constituintes:
 \begin{itemize}[align=left]
 \item[\texttt{load(int, ArrayList<String>)}] : percorre a lista de snapshots e chama o método processDoc, tendo o cuidado de tratar as exceções que ocorram;
-\item[\texttt{processDoc(FileInputStream )}] : sempre que encontra uma tag \texttt{page} chama o método \texttt{processPage}, calculando também o número de artigos totais e únicos, de acordo com o resultado do método \texttt{processPage};
-\item[\texttt{processPage(XMLStreamReader )}]: responsável por processar artigos novos, ou atualizar artigos caso estes já tenham sido encontrados em snapshots anteriores, caso o artigo em causa ainda não tenha sido encontrado adiciona-o (artigo) ao HashMap de seguida chama o método \texttt{processRevision} de modo a ser processada a revisão correspondente, devolve se o artigo é novo ou não;
-\item[\texttt{processRevision(XMLStreamReader , long )}]: responsável por processar a revisão encontrada, caso esta seja uma nova revisão, adiciona o autor da mesma(contribuidor) ao TreeMap usado para o efeito, ou incrementa o número de revisões do mesmo caso este já esteja presente, atualiza o número total de revisões e guarda o seu (da revisão) \texttt{timestamp} associado ao id, ao Map do artigo em questão.
+\item[\texttt{processDoc(FileInputStream )}] : sempre que encontra uma tag \texttt{page} invoca o método \texttt{processPage}, calculando também o número de artigos totais e únicos, de acordo com o resultado do método \texttt{processPage};
+\item[\texttt{processPage(XMLStreamReader )}]: responsável por processar artigos novos, ou atualizar artigos, caso estes já tenham sido encontrados em \textit{snapshots} anteriores, caso o artigo em causa ainda não tenha sido encontrado adiciona-o(artigo) ao \texttt{HashMap} de seguida invoca o método \texttt{processRevision} de modo a ser processada a revisão correspondente, devolve se o artigo é novo ou não;
+\item[\texttt{processRevision(XMLStreamReader , long )}]: responsável por processar a revisão encontrada, caso esta seja uma nova revisão, adiciona o autor da mesma(contribuidor) ao \texttt{TreeMap} usado para o efeito, ou incrementa o número de revisões do mesmo caso este já esteja presente, atualiza o número total de revisões e guarda o seu (da revisão) \texttt{timestamp} associado ao id, ao Map do artigo em questão.
 \end{itemize}
 
 \subsection{Queries}
-A resposta às três primeiras \textit{queries}(\texttt{all\_articles, unique\_articles, all\_revisions}) é imediata visto que o resultado das mesmas se encontra armazenado na três variáveis de instancia anteriormente referidas. A implementação das \textit{queries} \texttt{contributor\_name, article\_title, article\_timestamp} é bastante simples, sendo necessário bastando verificar se o artigo/contribuidor existem e, em caso afirmativo, devolver o valor por meio de métodos da classe implementados para o efeito. As restantes queries utilizam \texttt{streams}, como mostramos de seguida:
+A resposta às três primeiras \textit{queries}(\texttt{all\_articles, unique\_articles, all\_revisions}) é imediata visto que o resultado das mesmas se encontra armazenado na três variáveis de instancia anteriormente referidas. A implementação das \textit{queries} \texttt{contributor\_name, article\_title, article\_timestamp} é bastante simples, sendo apenas necessário verificar se o artigo/contribuidor/revisão existe e, em caso afirmativo, devolver o valor por meio de métodos da classe implementados para o efeito. As restantes queries utilizam \texttt{streams}, como mostramos de seguida:
 \begin{itemize}[align=left]
-\item[\texttt{top\_10\_contribuitors}] : ordenamos de acordo com o comparador ComparatorContributorRevs, depois pegamos nos 10 maiores, após isso, "transformamos" contribuitors em ids e por fim pomos num Arraylist;
-\item[\texttt{top\_20\_largest\_articles}] : ordenamos de acordo com o comparador ArtCompareText, pegamos nos 20 maiores, "transformamos" articles em ids e por fim pomos num Arraylist;
-\item[\texttt{top\_N\_articles\_with\_more\_words}] : ordenamos de acordo com o comparador ArtCompareWords, pegamos nos N maiores, após isso, "transformamos" articles em ids e por fim pomos num Arraylist;
-\item[\texttt{titles\_with\_prefix}] : "transformamos" articles em titles, após isso filtramos de modo a ficar apenas com aqueles que tem o prefixo, após isso ordenamos por ordem alfabética(ordem natural das Strings) e por fim pomos num Arraylist.
+\item[\texttt{top\_10\_contribuitors}] : ordenamos de acordo com o comparador ComparatorContributorRevs, guardando apenas os 10 maiores, após isso, mapeamos contribuitors nos seus id's correspondentes, armazenando o resultado num \texttt{ArrayList};
+\item[\texttt{top\_20\_largest\_articles}] : ordenamos de acordo com o comparador ArtCompareText, guardando os 20 maiores mapeando, de seguida, articles nos seus id's correspondentes, armazenando o resultado num \texttt{ArrayList};
+\item[\texttt{top\_N\_articles\_with\_more\_words}] : ordenamos de acordo com o comparador ArtCompareWords, guardando os N maiores mapeando, de seguida, articles nos seus id's correspondentes, armazenando o resultado num \texttt{ArrayList};
+\item[\texttt{titles\_with\_prefix}] : mapeamos articles em titles, filtrando o resultado de modo a ficar apenas aqueles que têm como prefixo a \texttt{String} passada como parametro, ordenando, por ordem alfabética, e armazenando num \texttt{Arraylist}.
 \end{itemize}
 
 \newpage
 
 \section{Conclusão}
-
+Os tempos obtidos nesta versão do projeto são superiores aos da versão em C. Uma das possíveis causas para este comportamento poderá ser as abstrações providenciadas pela linguagem \texttt{Java} que tornam operações aparentemente simples em operações elaboradas, nomeadamente a adição de novos elementos a \texttt{HashMap}'s. Por outro lado, aumentos na performance poderiam ser obtidos através do uso de \texttt{Parallel Stream}'s, apesar de em certos casos o uso das mesmas, devido à necessidade de sincronização entre \textit{threads}, levar a tempos superiores aos esperados.
 
 \end{document}
