@@ -5,7 +5,6 @@ Função que inicializa a estrutura
 @return TAD_istruct Devolve a estrutura iniciada
 */
 TAD_istruct init(){
-
     TAD_istruct res = (TAD_istruct)malloc(sizeof(struct TCD_istruct));
 
     if(res){

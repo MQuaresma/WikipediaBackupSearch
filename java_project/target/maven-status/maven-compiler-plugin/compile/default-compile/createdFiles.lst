@@ -1,0 +1,9 @@
+engine/ComparatorContributorRevs.class
+common/MyLog.class
+engine/Article.class
+engine/ArtCompareWords.class
+engine/Contributor.class
+li3/Interface.class
+engine/QueryEngineImpl.class
+engine/ArtCompareText.class
+li3/Main.class

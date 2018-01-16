@@ -6,9 +6,9 @@
 **/*.swp
 *.class
 **/snapshot*
+**/*.pdf
 
 ## Latex
 **/*.aux
 **/*.log
 **/*.toc
-
